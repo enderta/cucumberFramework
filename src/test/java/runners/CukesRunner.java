@@ -7,8 +7,11 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         plugin = {
-                "json:target/cucumber.json",
-                "html:target/default-html-reports",
+                "pretty",
+                "html:target/default-cucumber-reports.html",
+                "json:target/json-reports/cucumber.json",
+                "junit:target/xml-report/cucumber.xml",
+                "rerun:target/failedRerun.txt"
 
         },
 
@@ -16,7 +19,7 @@ import org.junit.runner.RunWith;
         glue = "stepDefinitions",
         dryRun = false,
 
-        tags = "@spartan"
+        tags = "@meduna"
 
 
 )

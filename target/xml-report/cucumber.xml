@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="46.124">
+    <testcase classname="admin should be login" name="Country creation" time="45.405">
+        <system-out><![CDATA[Given user create country in API............................................passed
+Given user is on the login page and singup page.............................passed
+And user sends username "adminaccount" and password "12345".................passed
+Then user click administration and click on country management..............passed
+And the user should see the country created in the API on the list..........passed
+]]></system-out>
+    </testcase>
+</testsuite>

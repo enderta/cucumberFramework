@@ -11,14 +11,12 @@ public class DBUtils {
     private static Statement statement;
     private static ResultSet resultSet;
 
-    public static void createConnection() {
+    public static void createConnection(String url, String username, String password) {
 
-        String dbUrl = ConfigurationReader.get("qa1_db_url");
-        String dbUsername = ConfigurationReader.get("qa1_db_username");
-        String dbPassword = ConfigurationReader.get("qa1_db_password");
+
 
         try {
-            connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
+            connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -180,5 +178,25 @@ public class DBUtils {
         resultSet.last();
         int rowCount = resultSet.getRow();
         return rowCount;
+    }
+    public static List<Map<String, Object>> getQueryResultMap2(String query,String url,String user,String password) {
+        createConnection(url,user,password);
+        executeQuery(query);
+        List<Map<String, Object>> rowList = new ArrayList<>();
+        ResultSetMetaData rsmd;
+        try {
+            rsmd = resultSet.getMetaData();
+            while (resultSet.next()) {
+                Map<String, Object> colNameValueMap = new HashMap<>();
+                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                    colNameValueMap.put(rsmd.getColumnName(i), resultSet.getObject(i));
+                }
+                rowList.add(colNameValueMap);
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return rowList;
     }
 }

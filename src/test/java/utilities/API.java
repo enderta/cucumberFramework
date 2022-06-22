@@ -10,43 +10,22 @@ import java.util.Map;
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 
-public class API {
+public class    API {
     public static int statusCode;
     public static String getToke(String email, String password){
         String token="";
-        Map<String, String> map=new HashMap<>();
-        map.put("email",email);
-        map.put("password",password);
-        baseURI="https://library2.cybertekschool.com/rest/v1";
-        Response post = given().accept(ContentType.JSON).contentType(ContentType.JSON).body(map)
-                .post("/login");
-        token=post.path("accessToken");
-        statusCode=post.getStatusCode();
-
-
-        return "Bearer "+token;
-
-    }
-    public static String getTokeLib(){
-        String token="";
-
-        token=getToke("librarian69@library", "KNPXrm3S" );
-
+        baseURI = "https://library2.cybertekschool.com/rest/v1/login";
+        Response post = given().contentType(ContentType.URLENC)
+                .formParam("email", email)
+                .formParam("password", password)
+                .post().prettyPeek();
+        token = post.path("token");
 
 
         return token;
 
     }
-    public static String getTokeStu(){
-        String token="";
 
-        token=getToke( "student66@library", "Ys9e3SFW");
-
-
-
-        return token;
-
-    }
     public static Map<String, Object> createUser(String userType) {
         int userGroup=0;
         if (userType.equalsIgnoreCase("librarian")) {
@@ -71,23 +50,6 @@ public class API {
         user.put("address", address);
         return user;
     }
-    public static Response addUser( String userType) {
-        // get a token
 
-        String librarianToken = API.getTokeLib();
-        // create new user information
-       Map<String,Object> user=createUser(userType);
-        // create using using the add_user
-        Response response = given().
-                header("x-library-token", librarianToken).
-                formParams(user) .
-                log().all().
-                when().
-                post(ConfigurationReader.get("base_url") + "/add_user").
-                prettyPeek();
-        response.then().statusCode(200);
-        user.put("id", response.path("id"));
-        return response;
-    }
 
 }
