@@ -2,6 +2,7 @@ package stepDefinitions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -10,7 +11,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
 import pages.LibPages;
 import utilities.API;
@@ -210,5 +214,10 @@ public class Deneme {
                 header("Authorization", "Bearer " + tkn).
                 pathParam("log",login).
                 when().delete("https://medunna.com/api/users/{log}").prettyPeek();
+    }
+    @Test
+    public void tes(){
+        Driver.get().get("https://www.google.com");
+
     }
 }

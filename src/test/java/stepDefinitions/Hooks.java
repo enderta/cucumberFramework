@@ -6,6 +6,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import utilities.Driver;
 
 import java.util.concurrent.TimeUnit;
@@ -16,7 +17,7 @@ public class Hooks {
     public void setUp() {
 
         //RestAssured.baseURI= "http://library2.cybertekschool.com/rest/v1";
-
+        WebDriver driver=Driver.get();
         Driver.get().manage().window().maximize();
         Driver.get().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 

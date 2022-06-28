@@ -1,3 +1,4 @@
+/*
 package stepDefinitions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -81,7 +82,7 @@ public class Meduna {
                 contentType(ContentType.JSON).
                 accept(ContentType.JSON).
                 body(json).
-                when().post("https://medunna.com/api/authenticate").prettyPeek();
+                    when().post("https://medunna.com/api/authenticate").prettyPeek();
         tkn = response.jsonPath().getString("id_token");
     }
 
@@ -178,33 +179,33 @@ public class Meduna {
 
     @Then("user sees this user in api and db")
     public void user_sees_this_user_in_api_and_db() throws JsonProcessingException, SQLException {
-        Driver.get().findElement(By.xpath("//span[.='Created date']")).click();
-        BrowserUtils.waitFor(4);
-        String id = Driver.get().findElement(By.xpath("//tbody//tr//td[2][.='" + nameUI + "']//..//td[1]")).getText();
-        Map<String, Object> bdy = new HashMap<>();
-        bdy.put("username", "admin79");
-        bdy.put("password", "admin");
-        bdy.put("rememberMe", "true");
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(bdy);
-        Response response = given().
-                contentType(ContentType.JSON).
-                accept(ContentType.JSON).
-                body(json).
-                when().post("https://medunna.com/api/authenticate").prettyPeek();
-        tkn = response.jsonPath().getString("id_token");
-        Response response1 = given().
-                contentType(ContentType.JSON).
-                accept(ContentType.JSON).
-                header("Authorization", "Bearer " + tkn).
-                queryParams("page", 281).
+            Driver.get().findElement(By.xpath("//span[.='Created date']")).click();
+            BrowserUtils.waitFor(4);
+            String id = Driver.get().findElement(By.xpath("//tbody//tr//td[2][.='" + nameUI + "']//..//td[1]")).getText();
+            Map<String, Object> bdy = new HashMap<>();
+            bdy.put("username", "admin79");
+            bdy.put("password", "admin");
+            bdy.put("rememberMe", "true");
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(bdy);
+            Response response = given().
+                    contentType(ContentType.JSON).
+                    accept(ContentType.JSON).
+                    body(json).
+                    when().post("https://medunna.com/api/authenticate").prettyPeek();
+            tkn = response.jsonPath().getString("id_token");
+            Response response1 = given().
+                    contentType(ContentType.JSON).
+                    accept(ContentType.JSON).
+                    header("Authorization", "Bearer " + tkn).
+                    queryParams("page", 281).
 
-                when().get("https://medunna.com/api/users/").prettyPeek();
-        JsonPath jsonPath = response1.jsonPath();
-        List<Map<String, Object>> list = jsonPath.getList("");
+                    when().get("https://medunna.com/api/users/").prettyPeek();
+            JsonPath jsonPath = response1.jsonPath();
+            List<Map<String, Object>> list = jsonPath.getList("");
 
 
-        String firstNameApi = list.stream().filter(x -> (Integer.parseInt(x.get("id").toString()) == Integer.parseInt(id))).map(x -> x.get("firstName").toString()).collect(Collectors.joining());
+            String firstNameApi = list.stream().filter(x -> (Integer.parseInt(x.get("id").toString()) == Integer.parseInt(id))).map(x -> x.get("firstName").toString()).collect(Collectors.joining());
         Connection conn = DriverManager.getConnection("jdbc:postgresql://medunna.com:5432/medunna_db", "medunnadb_user", "Medunnadb_@129");
         Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         ResultSet rs = stmt.executeQuery("select * from jhi_user where id= " + Integer.valueOf(id));
@@ -387,3 +388,4 @@ public class Meduna {
 
 
 }
+*/
