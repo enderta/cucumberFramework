@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.json.Json;
 import org.openqa.selenium.support.ui.Select;
 import utilities.BrowserUtils;
 import utilities.Driver;
@@ -195,6 +196,48 @@ String nameUI="";
         Map<Object, Object> map = jsonPath.getMap("");
         System.out.println("map= "+map);
     }
+    @Given("user is on APi")
+    public void user_is_on_a_pi() throws JsonProcessingException {
+        Map<String, Object> bdy = new HashMap<>();
+        bdy.put("username", "admin79");
+        bdy.put("password", "admin");
+        bdy.put("rememberMe", "true");
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(bdy);
+        Response response = given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                body(json).
+                when().post("https://medunna.com/api/authenticate");
+        tkn = response.jsonPath().getString("id_token");
+    }
+    String log="";
+    @When("user use delet method by usin {string}")
+    public void user_use_delet_method_by_usin(String log) {
+      given().contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                header("Authorization", "Bearer " + tkn).
+                pathParam("login",log).
+                when().delete("https://medunna.com/api/users/{login}");
+      this.log=log;
+
+    }
+
+    @Then("user use get mehtod and not find the user")
+    public void user_use_get_mehtod_and_not_find_the_user() {
+        Response response = given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                header("Authorization", "Bearer " + tkn).
+                pathParam("login", log).
+
+                when().get("https://medunna.com/api/users/{login}");
+        String title = response.jsonPath().getString("title");
+        Assert.assertEquals(404, response.getStatusCode());
+        Assert.assertEquals(title, "Not Found");
+
+    }
+
 
 
 }

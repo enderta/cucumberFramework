@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="30.655">
-    <testcase classname="admin should be login" name=":Creating user" time="30.268">
-        <system-out><![CDATA[Given user is on the login page and singup page.............................passed
-And user sends username "adminaccount" and password "12345".................passed
-Then user click administration and click on user management.................passed
-And user click on add user..................................................passed
-When enter "asfg4" "dsfg" "ksfg" "ksfg4@gmail.com" "515-55-9907"............passed
-Then user click on save.....................................................passed
-Then user should see the user created successfully..........................passed
-Then user sees this user in api and db......................................passed
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="10.127">
+    <testcase classname="admin should be login" name="Deleting user" time="9.709">
+        <system-out><![CDATA[Given user is on APi........................................................passed
+When user use delet method by usin "asfg4"..................................passed
+Then user use get mehtod and not find the user..............................passed
 ]]></system-out>
     </testcase>
 </testsuite>
