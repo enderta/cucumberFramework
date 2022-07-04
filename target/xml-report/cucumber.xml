@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="10.127">
-    <testcase classname="admin should be login" name="Deleting user" time="9.709">
-        <system-out><![CDATA[Given user is on APi........................................................passed
-When user use delet method by usin "asfg4"..................................passed
-Then user use get mehtod and not find the user..............................passed
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="50.859">
+    <testcase classname="admin should be login" name="Room creation" time="50.453">
+        <system-out><![CDATA[Given user is on the login page and singup page.............................passed
+And user sends username "adminaccount" and password "12345".................passed
+Then user click administration and click on room management.................passed
+And user click on add room..................................................passed
+When enter "80002" "TWIN" "100" "with TV"...................................passed
+Then user click on save.....................................................passed
+Then user should see the room created successfully..........................passed
+Then user sees this room in api and db......................................passed
 ]]></system-out>
     </testcase>
 </testsuite>

@@ -238,6 +238,87 @@ String nameUI="";
 
     }
 
+    @Then("user click administration and click on room management")
+    public void user_click_administration_and_click_on_room_management() {
+        WebElement element = driver.findElement(By.xpath("//li[@id='entity-menu']//a//*[.='Room']"));
+        JavascriptExecutor js = (JavascriptExecutor)driver;
+        js.executeScript("arguments[0].click();", element);
+    }
+    @Then("user click on add room")
+    public void user_click_on_add_room() {
+       driver.findElement(By.xpath("//*[.='Create a new Room']")).click();
+    }
+    @When("enter {string} {string} {string} {string}")
+    public void enter(String number, String type, String price, String description) {
+        Driver.get().findElement(By.id("room-roomNumber")).sendKeys(number);
+        WebElement roomTypeLabel = Driver.get().findElement(By.id("room-roomType"));
+        Select select = new Select(roomTypeLabel);
+        select.selectByValue(type);
+        Driver.get().findElement(By.id("room-status")).click();
+        Driver.get().findElement(By.id("room-price")).sendKeys(price);
+        Driver.get().findElement(By.id("room-description")).sendKeys(description);
+
+    }
+    @Then("user should see the room created successfully")
+    public void user_should_see_the_room_created_successfully() {
+        String text = driver.findElement(By.xpath("//div[@role='alert']")).getText();
+      //  Assert.assertTrue(text.contains("A new room is created"));
+        System.out.println(text);
+    }
+    @Then("user sees this room in api and db")
+    public void user_sees_this_room_in_api_and_db() throws JsonProcessingException, SQLException {
+        driver.findElement(By.xpath("//thead//tr//th[7]")).click();
+        BrowserUtils.waitFor(4);
+        String roomId = Driver.get().findElement(By.xpath("//tbody//tr[1]//td[1]")).getText();
+        String roomNum = Driver.get().findElement(By.xpath("//tbody//tr[1]//td[2]")).getText();
+        Map<String,Object> bdy = new HashMap<>();
+        bdy.put("username", "admin79");
+        bdy.put("password", "admin");
+        bdy.put("rememberMe", "true");
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(bdy);
+        Response response = given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                body(json).
+                when().post("https://medunna.com/api/authenticate");
+        tkn = response.jsonPath().getString("id_token");
+        Response response1 = given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                header("Authorization", "Bearer " + tkn).
+                pathParam("id",roomId).
+                when().get("https://medunna.com/api/rooms/{id}");
+        JsonPath jsonPath = response1.jsonPath();
+        String roomNumber = jsonPath.getString("roomNumber");
+        Assert.assertEquals(roomNumber, roomNum);
+
+        Connection conn = DriverManager.getConnection("jdbc:postgresql://medunna.com:5432/medunna_db", "medunnadb_user", "Medunnadb_@129");
+        Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        ResultSet rs = stmt.executeQuery("select * from room where id= " + Integer.valueOf(roomId));
+        ResultSetMetaData metaData = rs.getMetaData();
+        Map<String, Object> map = new HashMap<>();
+        while (rs.next()) {
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                String columnName = metaData.getColumnName(i);
+                String value = rs.getString(i);
+                map.put(columnName, value);
+            }
+        }
+
+        Assert.assertEquals(map.get("room_number"), roomNum);
+
+
+
+        given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                header("Authorization", "Bearer " + tkn).
+                pathParam("id", roomId).
+                when().delete("https://medunna.com/api/rooms/{id}").prettyPeek();
+
+    }
+
 
 
 }

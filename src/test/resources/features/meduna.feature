@@ -35,7 +35,7 @@ Feature:admin should be login
       | Login | firstname | lastname | email           | ssn         |
       | asfg4 | dsfg      | ksfg     | ksfg4@gmail.com | 515-55-9907 |
 
- @meduna
+
   Scenario Outline: Deleting user
     Given user is on APi
     When user use delet method by usin "<logname>"
@@ -44,7 +44,7 @@ Feature:admin should be login
       | logname |
       | asfg4   |
 
-
+  @meduna
   Scenario Outline: Room creation
     Given user is on the login page and singup page
     And user sends username "adminaccount" and password "12345"
@@ -56,7 +56,7 @@ Feature:admin should be login
     Then user sees this room in api and db
     Examples:
       | roomnumber | roomtype | roomprice | roomdescription |
-      | 80000      | TWIN     | 100       | with TV         |
+      | 80002      | TWIN     | 100       | with TV         |
 
     Scenario: Country creation
         Given user create country in API

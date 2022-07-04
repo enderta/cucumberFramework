@@ -42,7 +42,7 @@ select * from room]]></console>
       <console name="Connection 1" type="STANDARD" schema="" session="Main"><![CDATA[select * from staff]]></console>
     </connection>
     <connection id="860f27fb-555e-44ff-8d78-9c11361f575d">
-      <console name="Connection 2" type="STANDARD" schema="public" session="Main"><![CDATA[select * from staff where id=83551]]></console>
+      <console name="Connection 2" type="STANDARD" schema="public" session="Main"><![CDATA[select * from room where id='5924']]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
