@@ -1,5 +1,5 @@
 Feature: End to end login test
-
+  @lib
   Scenario: Login as a student to UI
     Given the user is on the Library app login page
     When  the user logs in as librarian
@@ -26,7 +26,7 @@ Feature: End to end login test
     Then click save button see the msg "The book has been updated."
 
 
-  @lib
+
   Scenario Outline: user can create user on api <userType>
     Given create new user with <userType>
     Then user should be able to get "The user has been created." in response body for add user

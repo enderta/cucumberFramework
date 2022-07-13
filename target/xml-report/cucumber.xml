@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="50.859">
-    <testcase classname="admin should be login" name="Room creation" time="50.453">
-        <system-out><![CDATA[Given user is on the login page and singup page.............................passed
-And user sends username "adminaccount" and password "12345".................passed
-Then user click administration and click on room management.................passed
-And user click on add room..................................................passed
-When enter "80002" "TWIN" "100" "with TV"...................................passed
-Then user click on save.....................................................passed
-Then user should see the room created successfully..........................passed
-Then user sees this room in api and db......................................passed
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="5.644">
+    <testcase classname="End to end login test" name="Login as a student to UI" time="5.237">
+        <system-out><![CDATA[Given the user is on the Library app login page.............................passed
+When the user logs in as librarian..........................................passed
 ]]></system-out>
     </testcase>
 </testsuite>

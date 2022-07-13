@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -215,9 +216,28 @@ public class Deneme {
                 pathParam("log",login).
                 when().delete("https://medunna.com/api/users/{log}").prettyPeek();
     }
-    @Test
-    public void tes(){
-        Driver.get().get("https://www.google.com");
+  @ParameterizedTest()
+    @ValueSource(ints={1,2,3,4,5})
+    public void test3(int i) throws SQLException {
+        baseURI="https://cyf-react.glitch.me/customers/"+i;
+        Response response = given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                when().get(baseURI).prettyPeek();
+      Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/cyf_hotels", "ender", "ender");
+        Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        ResultSet resultSet = statement.executeQuery("select * from customers");
+      ResultSetMetaData metaData = resultSet.getMetaData();
+      List<Map<String,Object>> ls=new ArrayList<>();
+      while (resultSet.next()) {
+          Map<String,Object> map=new HashMap<>();
+          for (int j = 1; j <= metaData.getColumnCount(); j++) {
+              map.put(metaData.getColumnName(j),resultSet.getObject(j));
+          }
+          ls.add(map);
+      }
+        System.out.println(ls);
 
-    }
+
+  }
 }
