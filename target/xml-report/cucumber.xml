@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="5.644">
-    <testcase classname="End to end login test" name="Login as a student to UI" time="5.237">
-        <system-out><![CDATA[Given the user is on the Library app login page.............................passed
-When the user logs in as librarian..........................................passed
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="17.179">
+    <testcase classname="GMI Bank" name="Login" time="16.764">
+        <system-out><![CDATA[Given User is on the GMIBank login page.....................................passed
+When User enters valid "gino.wintheiser" and "%B6B*q1!TH"...................passed
+Then User should be able to login successfully..............................passed
 ]]></system-out>
     </testcase>
 </testsuite>
