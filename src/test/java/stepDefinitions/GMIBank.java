@@ -7,6 +7,12 @@ import pages.GMIPages;
 import utilities.BrowserUtils;
 import utilities.Driver;
 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class GMIBank {
     GMIPages gmiBank = new GMIPages();
 
@@ -23,10 +29,33 @@ public class GMIBank {
         BrowserUtils.waitFor(4);
     }
 
-    @Then("User should be able to login successfully")
-    public void user_should_be_able_to_login_successfully() {
-        String text = Driver.get().findElement(By.xpath("(//li[@id='account-menu']//a//span)[1]")).getText();
-        Assert.assertEquals("Joe King", text);
+    List<Map<String,Object>> ls=new ArrayList<>();
+    Map<String,Object> map=new HashMap<>();
+    @Given("user is logging to the GMI DB")
+    public void user_is_logging_to_the_gmi_db() throws SQLException {
+        Connection conn= DriverManager.getConnection("jdbc:postgresql://157.230.48.97:5432/gmibank_db","techprodb_user","Techpro_@126" );
+        Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        ResultSet resultSet = statement.executeQuery("select * from tp_customer");
+        ResultSetMetaData metaData = resultSet.getMetaData();
+
+        while (resultSet.next()) {
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                map.put(metaData.getColumnName(i), resultSet.getObject(i));
+            }
+            ls.add(map);
+        }
+
+
     }
+    @When("user sends get request to the DB")
+    public void user_sends_get_request_to_the_db() {
+        //ls.forEach(System.out::println);
+    }
+    @Then("user should be able to login successfully DB")
+    public void user_should_be_able_to_login_successfully_db() {
+     ls.stream().filter(x->x.get("last_name").equals("Romaguera")).forEach(System.out::println);
+    }
+
+
 
 }

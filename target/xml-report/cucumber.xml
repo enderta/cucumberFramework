@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="17.179">
-    <testcase classname="GMI Bank" name="Login" time="16.764">
-        <system-out><![CDATA[Given User is on the GMIBank login page.....................................passed
-When User enters valid "gino.wintheiser" and "%B6B*q1!TH"...................passed
-Then User should be able to login successfully..............................passed
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="4.627">
+    <testcase classname="GMI Bank" name="Login DB" time="4.216">
+        <system-out><![CDATA[Given user is logging to the GMI DB.........................................passed
+When user sends get request to the DB.......................................passed
+Then user should be able to login successfully DB...........................passed
 ]]></system-out>
     </testcase>
 </testsuite>
