@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="4.627">
-    <testcase classname="GMI Bank" name="Login DB" time="4.216">
-        <system-out><![CDATA[Given user is logging to the GMI DB.........................................passed
-When user sends get request to the DB.......................................passed
-Then user should be able to login successfully DB...........................passed
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="5.818">
+    <testcase classname="GMI Bank" name="Login API" time="5.393">
+        <system-out><![CDATA[Given user is logging to the GMI API........................................passed
+When user sends get request to the API......................................passed
 ]]></system-out>
     </testcase>
 </testsuite>

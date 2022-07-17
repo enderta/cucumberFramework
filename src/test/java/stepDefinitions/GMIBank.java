@@ -1,6 +1,8 @@
 package stepDefinitions;
 
 import io.cucumber.java.en.*;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import pages.GMIPages;
@@ -12,6 +14,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static io.restassured.RestAssured.baseURI;
+import static io.restassured.RestAssured.given;
 
 public class GMIBank {
     GMIPages gmiBank = new GMIPages();
@@ -55,7 +60,32 @@ public class GMIBank {
     public void user_should_be_able_to_login_successfully_db() {
      ls.stream().filter(x->x.get("last_name").equals("Romaguera")).forEach(System.out::println);
     }
+    List<Map<String,Object>> ls2=new ArrayList<>();
+    @Given("user is logging to the GMI API")
+    public void user_is_logging_to_the_gmi_api() {
+        baseURI="https://www.gmibank.com/api/";
+
+        Response authorization = given().contentType(ContentType.JSON)
+                .accept(ContentType.JSON).
+                header("Authorization", "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vLndpbnRoZWlzZXIiLCJhdXRoIjoiUk9MRV9FTVBMT1lFRSIsImV4cCI6MTY1ODE0NzM4OH0.iKyq8YZu6D05Wr8rF43yWaKHOMhNGBDJVeFizpF0mWHql2gqzo-xuCMt9TmG8Gnvq9LWYuMww6DVdqsRJZHbOg").
+                when().get("tp-customers");
+
+       ls2 = authorization.jsonPath().getList("");
+
+
+    }
+    @When("user sends get request to the API")
+    public void user_sends_get_request_to_the_api() {
+        ls2.stream().filter(x->x.get("firstName").equals("Ali")).forEach(System.out::println);
+    }
+    @Then("user should be able to login successfully API")
+    public void user_should_be_able_to_login_successfully_api() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
+    }
 
 
 
+
+//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
 }

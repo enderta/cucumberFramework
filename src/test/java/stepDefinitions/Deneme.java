@@ -240,4 +240,38 @@ public class Deneme {
 
 
   }
+  @Test
+    public void gmi() throws JsonProcessingException {
+        baseURI="https://www.gmibank.com/api/authenticate";
+        Map<String,Object> bdy=new HashMap<>();
+        bdy.put("username","gino.wintheiser");
+        bdy.put("password","%B6B*q1!TH");
+        ObjectMapper mapper=new ObjectMapper();
+        String s=mapper.writeValueAsString(bdy);
+        Response response=given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                body(s).
+                when().post().prettyPeek();
+String tkn=response.jsonPath().getString("Authorization");
+
+given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                header("Authorization", "Bearer " + tkn).
+                when().get("https://www.gmibank.com/api/accounts").prettyPeek();
+    }
+    @Test
+    public void gmi2() throws JsonProcessingException {
+        baseURI="https://www.gmibank.com/api/";
+
+        Response authorization = given().contentType(ContentType.JSON)
+                .accept(ContentType.JSON).
+                header("Authorization", "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vLndpbnRoZWlzZXIiLCJhdXRoIjoiUk9MRV9FTVBMT1lFRSIsImV4cCI6MTY1ODE0NzM4OH0.iKyq8YZu6D05Wr8rF43yWaKHOMhNGBDJVeFizpF0mWHql2gqzo-xuCMt9TmG8Gnvq9LWYuMww6DVdqsRJZHbOg").
+                when().get("tp-customers");
+
+        List<Map<String,Object>> list = authorization.jsonPath().getList("");
+       list.stream().filter(x->x.get("firstName").equals("Ali")).forEach(System.out::println);
+
+    }
 }
