@@ -262,16 +262,30 @@ given().
                 when().get("https://www.gmibank.com/api/accounts").prettyPeek();
     }
     @Test
-    public void gmi2() throws JsonProcessingException {
+    public void gmi2() throws JsonProcessingException, SQLException {
         baseURI="https://www.gmibank.com/api/";
-
+        String ID="38016";
         Response authorization = given().contentType(ContentType.JSON)
                 .accept(ContentType.JSON).
-                header("Authorization", "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vLndpbnRoZWlzZXIiLCJhdXRoIjoiUk9MRV9FTVBMT1lFRSIsImV4cCI6MTY1ODE0NzM4OH0.iKyq8YZu6D05Wr8rF43yWaKHOMhNGBDJVeFizpF0mWHql2gqzo-xuCMt9TmG8Gnvq9LWYuMww6DVdqsRJZHbOg").
-                when().get("tp-customers");
+pathParam("ID",ID).
 
-        List<Map<String,Object>> list = authorization.jsonPath().getList("");
-       list.stream().filter(x->x.get("firstName").equals("Ali")).forEach(System.out::println);
+                header("Authorization", "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vLndpbnRoZWlzZXIiLCJhdXRoIjoiUk9MRV9FTVBMT1lFRSIsImV4cCI6MTY1ODIzNjMyMX0.fx3ydSIrFh25-CDG_1BnIWUGKy5r-oUJZU8kIXyhKSVn7p5EfB_TMs9ef2ASzgnkwe1q6shAd9iHT_sPJTerRQ").
+                when().get("tp-customers/{ID}").prettyPeek();
+       String nameAPI= authorization.jsonPath().getString("firstName") + " " + authorization.jsonPath().getString("lastName");
+        System.out.println(nameAPI);
+        Connection conn= DriverManager.getConnection("jdbc:postgresql://157.230.48.97:5432/gmibank_db","techprodb_user","Techpro_@126" );
+        Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        ResultSet resultSet = statement.executeQuery("select * from tp_customer where id="+ID);
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        Map<String,Object> map=new HashMap<>();
+        while (resultSet.next()) {
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                map.put(metaData.getColumnName(i), resultSet.getObject(i));
+            }
+        }
+       String nameDB=map.get("first_name")+" "+map.get("last_name");
+        System.out.println(nameDB);
+
 
     }
 }
