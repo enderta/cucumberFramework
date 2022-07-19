@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="84.916">
-    <testcase classname="GMI Bank" name="UI API DB" time="84.462">
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="152.495">
+    <testcase classname="GMI Bank" name="Accounts" time="152.036">
         <system-out><![CDATA[Given User is on the GMIBank login page.....................................passed
 When User enters valid "gino.wintheiser" and "%B6B*q1!TH"...................passed
-Given user is getting info about user of "38016" from UI....................passed
-Then user should be able to get info about user of "38016" from DB And API..passed
-Then all the info should be same............................................passed
+Given user is getting info about acc of "123169" from UI....................passed
+Then user should be able to get info about acc of "123169" from DB And API..passed
+Then all same acc info should be same.......................................passed
 ]]></system-out>
     </testcase>
 </testsuite>

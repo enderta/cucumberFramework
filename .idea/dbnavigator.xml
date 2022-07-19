@@ -48,7 +48,13 @@ select * from room]]></console>
       <console name="Connection 3" type="STANDARD" schema="public" session="Main"><![CDATA[select * from customers;]]></console>
     </connection>
     <connection id="ff567d67-046b-4ae5-b89d-c9765d55ccdb">
-      <console name="Connection 4" type="STANDARD" schema="public" session="Main"><![CDATA[select * from tp_customer]]></console>
+      <console name="Connection 4" type="STANDARD" schema="public" session="Main"><![CDATA[select * from tp_customer where first_name='Jude'
+select * from jhi_user where email='joeking@gmail.com'
+select * from tp_customer_account
+    select * from tp_account
+
+select a.first_name,a.last_name,a.id,c.tpcustomer_id,c.account_id from tp_customer a join tp_customer_account c on a.id=c.tpcustomer_id where a.first_name='Jude' 
+select a.first_name,a.last_name,u.id from tp_customer a join jhi_user u on a.user_id=u.id where a.first_name='Ali']]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">

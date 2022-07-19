@@ -103,7 +103,6 @@ public class GMIBank {
         Response authorization = given().contentType(ContentType.JSON)
                 .accept(ContentType.JSON).
                 pathParam("ID",ID).
-
                 header("Authorization", "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vLndpbnRoZWlzZXIiLCJhdXRoIjoiUk9MRV9FTVBMT1lFRSIsImV4cCI6MTY1ODIzNjMyMX0.fx3ydSIrFh25-CDG_1BnIWUGKy5r-oUJZU8kIXyhKSVn7p5EfB_TMs9ef2ASzgnkwe1q6shAd9iHT_sPJTerRQ").
                 when().get("tp-customers/{ID}");
         nameAPI= authorization.jsonPath().getString("firstName") + " " + authorization.jsonPath().getString("lastName");
@@ -130,6 +129,35 @@ public class GMIBank {
         Assert.assertEquals(nameUI,nameAPI);
         Assert.assertEquals(nameUI,nameDB);
     }
+    String balanceUI,BalanceAPI,BalanceDB;
+    @Given("user is getting info about acc of {string} from UI")
+    public void user_is_getting_info_about_acc_of_from_ui(String ID) {
+        Driver.get().findElement(By.xpath("//nav//li[@id='entity-menu']")).click();
+        Driver.get().findElement(By.xpath("(//nav//li[@id='entity-menu']//a)[3]")).click();
+        BrowserUtils.waitFor(4);
+        Driver.get().findElement(By.xpath("//tbody/tr//td[.='"+ID+"']")).click();
+        BrowserUtils.waitFor(4);
+        balanceUI= Driver.get().findElement(By.xpath("//dd[2]")).getText();
+    }
+    @Then("user should be able to get info about acc of {string} from DB And API")
+    public void user_should_be_able_to_get_info_about_acc_of_from_db_and_api(String ID) {
+        baseURI="https://www.gmibank.com/api/";
+
+        Response authorization = given().contentType(ContentType.JSON)
+                .accept(ContentType.JSON).
+                pathParam("ID",ID).
+                header("Authorization", "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vLndpbnRoZWlzZXIiLCJhdXRoIjoiUk9MRV9FTVBMT1lFRSIsImV4cCI6MTY1ODMyNzM1OH0.4lyIzVBJfe7c575bUJAzCTz_KHFXCoxoS-NBflBDL7VNX1EdW6waxzwQnnTO_KZS4QyeFXko_TzLIyYJ9IB5QQ").
+                when().get("tp-accounts/{ID}");
+        BalanceAPI= authorization.jsonPath().getString("balance");
+
+    }
+    @Then("all same acc info should be same")
+    public void all_same_acc_info_should_be_same() {
+        System.out.println(balanceUI);
+        System.out.println(BalanceAPI);
+        Assert.assertEquals(balanceUI,BalanceAPI);
+    }
+
 
 
 

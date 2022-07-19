@@ -270,7 +270,7 @@ given().
 pathParam("ID",ID).
 
                 header("Authorization", "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vLndpbnRoZWlzZXIiLCJhdXRoIjoiUk9MRV9FTVBMT1lFRSIsImV4cCI6MTY1ODIzNjMyMX0.fx3ydSIrFh25-CDG_1BnIWUGKy5r-oUJZU8kIXyhKSVn7p5EfB_TMs9ef2ASzgnkwe1q6shAd9iHT_sPJTerRQ").
-                when().get("tp-customers/{ID}").prettyPeek();
+                when().delete("tp-customers/{ID}").prettyPeek();
        String nameAPI= authorization.jsonPath().getString("firstName") + " " + authorization.jsonPath().getString("lastName");
         System.out.println(nameAPI);
         Connection conn= DriverManager.getConnection("jdbc:postgresql://157.230.48.97:5432/gmibank_db","techprodb_user","Techpro_@126" );

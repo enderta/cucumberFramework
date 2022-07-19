@@ -14,7 +14,7 @@ Feature: GMI Bank
   Scenario: Login API
     Given user is logging to the GMI API
     When user sends get request to the API
-  @gmi
+
   Scenario Outline: UI API DB
     Given user is getting info about user of "<ID>" from UI
     Then user should be able to get info about user of "<ID>" from DB And API
@@ -22,3 +22,12 @@ Feature: GMI Bank
     Examples:
       | ID |
       |38016|
+
+  @gmi
+  Scenario Outline: Accounts
+    Given user is getting info about acc of "<ID>" from UI
+    Then user should be able to get info about acc of "<ID>" from DB And API
+    Then all same acc info should be same
+    Examples:
+      | ID |
+      |123169|
