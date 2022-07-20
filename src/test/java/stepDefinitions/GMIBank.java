@@ -1,5 +1,7 @@
 package stepDefinitions;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.*;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -156,6 +158,56 @@ public class GMIBank {
         System.out.println(balanceUI);
         System.out.println(BalanceAPI);
         Assert.assertEquals(balanceUI,BalanceAPI);
+    }
+
+    String id;
+    @Given("update created a country using api end point {string} and its extension {string} bank8")
+    public void update_created_a_country_using_api_end_point_and_its_extension_bank8(String country, String ID) throws JsonProcessingException {
+        baseURI="https://www.gmibank.com/api/";
+    Map<String,Object> bdy=new HashMap<>();
+    bdy.put("name",country);
+    bdy.put("state","Farland");
+        ObjectMapper mapper=new ObjectMapper();
+        String json=mapper.writeValueAsString(bdy);
+
+        Response response = given().contentType(ContentType.JSON)
+                .accept(ContentType.JSON).
+
+                header("Authorization", "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vLndpbnRoZWlzZXIiLCJhdXRoIjoiUk9MRV9FTVBMT1lFRSIsImV4cCI6MTY1ODMyNzM1OH0.4lyIzVBJfe7c575bUJAzCTz_KHFXCoxoS-NBflBDL7VNX1EdW6waxzwQnnTO_KZS4QyeFXko_TzLIyYJ9IB5QQ").
+                body(json).
+                when().post("tp-countries");
+        response.prettyPrint();
+
+         id = response.jsonPath().getString("id");
+        Response response1 = given().contentType(ContentType.JSON)
+                .accept(ContentType.JSON).
+                pathParam("ID", id).
+                header("Authorization", "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vLndpbnRoZWlzZXIiLCJhdXRoIjoiUk9MRV9FTVBMT1lFRSIsImV4cCI6MTY1ODMyNzM1OH0.4lyIzVBJfe7c575bUJAzCTz_KHFXCoxoS-NBflBDL7VNX1EdW6waxzwQnnTO_KZS4QyeFXko_TzLIyYJ9IB5QQ").
+                when().get("tp-countries/{ID}");
+        response1.prettyPrint();
+        String countryAPI= response1.jsonPath().getString("name");
+        Assert.assertEquals(countryAPI,country);
+        Response delete = given().accept(ContentType.JSON)
+                .pathParam("ID", id).
+                header("Authorization", "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vLndpbnRoZWlzZXIiLCJhdXRoIjoiUk9MRV9FTVBMT1lFRSIsImV4cCI6MTY1ODMyNzM1OH0.4lyIzVBJfe7c575bUJAzCTz_KHFXCoxoS-NBflBDL7VNX1EdW6waxzwQnnTO_KZS4QyeFXko_TzLIyYJ9IB5QQ").
+                when().delete("tp-countries/{ID}");
+        delete.then().statusCode(204);
+        given().accept(ContentType.JSON)
+                .pathParam("ID", id).
+                header("Authorization", "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vLndpbnRoZWlzZXIiLCJhdXRoIjoiUk9MRV9FTVBMT1lFRSIsImV4cCI6MTY1ODMyNzM1OH0.4lyIzVBJfe7c575bUJAzCTz_KHFXCoxoS-NBflBDL7VNX1EdW6waxzwQnnTO_KZS4QyeFXko_TzLIyYJ9IB5QQ").
+                when().get("tp-countries/{ID}").then().statusCode(404);
+
+    }
+
+    @Then("user should see the updated country in the UI")
+    public void user_should_see_the_updated_country_in_the_ui() {
+        Driver.get().findElement(By.xpath("//nav//li[@id='entity-menu']")).click();
+        Driver.get().findElement(By.xpath("(//nav//li[@id='entity-menu']//a)[3]")).click();
+        BrowserUtils.waitFor(4);
+        Driver.get().findElement(By.xpath("//tbody/tr//td[.='"+id+"']")).click();
+        BrowserUtils.waitFor(4);
+        String countryUI= Driver.get().findElement(By.xpath("//dd[2]")).getText();
+        Assert.assertEquals(countryUI,"Farland");
     }
 
 

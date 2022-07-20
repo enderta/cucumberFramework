@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="152.495">
-    <testcase classname="GMI Bank" name="Accounts" time="152.036">
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="1" time="19.53">
+    <testcase classname="GMI Bank" name="Update country bank8" time="18.972">
         <system-out><![CDATA[Given User is on the GMIBank login page.....................................passed
 When User enters valid "gino.wintheiser" and "%B6B*q1!TH"...................passed
-Given user is getting info about acc of "123169" from UI....................passed
-Then user should be able to get info about acc of "123169" from DB And API..passed
-Then all same acc info should be same.......................................passed
+Given update created a country using api end point "Far Far Away" and its extension "95494" bank8.passed
 ]]></system-out>
     </testcase>
 </testsuite>
