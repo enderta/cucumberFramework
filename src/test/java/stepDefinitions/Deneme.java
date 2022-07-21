@@ -32,7 +32,7 @@ import static io.restassured.RestAssured.given;
 
 public class Deneme {
     public int factorial(int[] n) {
-       //that, given an array A of N integers, returns the smallest positive integer (greater than 0) that does not occur in A.
+        //that, given an array A of N integers, returns the smallest positive integer (greater than 0) that does not occur in A.
 
 
         Arrays.sort(n);
@@ -152,7 +152,7 @@ public class Deneme {
                 accept(ContentType.JSON).
                 body(json).
                 when().post("https://medunna.com/api/authenticate").prettyPeek();
-       String tkn = response.jsonPath().getString("id_token");
+        String tkn = response.jsonPath().getString("id_token");
         Response response1 = given().
                 contentType(ContentType.JSON).
                 accept(ContentType.JSON).
@@ -216,7 +216,7 @@ public class Deneme {
                 pathParam("log",login).
                 when().delete("https://medunna.com/api/users/{log}").prettyPeek();
     }
-  @ParameterizedTest()
+    @ParameterizedTest()
     @ValueSource(ints={1,2,3,4,5})
     public void test3(int i) throws SQLException {
         baseURI="https://cyf-react.glitch.me/customers/"+i;
@@ -224,23 +224,23 @@ public class Deneme {
                 contentType(ContentType.JSON).
                 accept(ContentType.JSON).
                 when().get(baseURI).prettyPeek();
-      Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/cyf_hotels", "ender", "ender");
+        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/cyf_hotels", "ender", "ender");
         Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         ResultSet resultSet = statement.executeQuery("select * from customers");
-      ResultSetMetaData metaData = resultSet.getMetaData();
-      List<Map<String,Object>> ls=new ArrayList<>();
-      while (resultSet.next()) {
-          Map<String,Object> map=new HashMap<>();
-          for (int j = 1; j <= metaData.getColumnCount(); j++) {
-              map.put(metaData.getColumnName(j),resultSet.getObject(j));
-          }
-          ls.add(map);
-      }
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        List<Map<String,Object>> ls=new ArrayList<>();
+        while (resultSet.next()) {
+            Map<String,Object> map=new HashMap<>();
+            for (int j = 1; j <= metaData.getColumnCount(); j++) {
+                map.put(metaData.getColumnName(j),resultSet.getObject(j));
+            }
+            ls.add(map);
+        }
         System.out.println(ls);
 
 
-  }
-  @Test
+    }
+    @Test
     public void gmi() throws JsonProcessingException {
         baseURI="https://www.gmibank.com/api/authenticate";
         Map<String,Object> bdy=new HashMap<>();
@@ -253,9 +253,9 @@ public class Deneme {
                 accept(ContentType.JSON).
                 body(s).
                 when().post().prettyPeek();
-String tkn=response.jsonPath().getString("Authorization");
+        String tkn=response.jsonPath().getString("Authorization");
 
-given().
+        given().
                 contentType(ContentType.JSON).
                 accept(ContentType.JSON).
                 header("Authorization", "Bearer " + tkn).
@@ -267,11 +267,11 @@ given().
         String ID="38016";
         Response authorization = given().contentType(ContentType.JSON)
                 .accept(ContentType.JSON).
-pathParam("ID",ID).
+                pathParam("ID",ID).
 
                 header("Authorization", "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaW5vLndpbnRoZWlzZXIiLCJhdXRoIjoiUk9MRV9FTVBMT1lFRSIsImV4cCI6MTY1ODIzNjMyMX0.fx3ydSIrFh25-CDG_1BnIWUGKy5r-oUJZU8kIXyhKSVn7p5EfB_TMs9ef2ASzgnkwe1q6shAd9iHT_sPJTerRQ").
                 when().delete("tp-customers/{ID}").prettyPeek();
-       String nameAPI= authorization.jsonPath().getString("firstName") + " " + authorization.jsonPath().getString("lastName");
+        String nameAPI= authorization.jsonPath().getString("firstName") + " " + authorization.jsonPath().getString("lastName");
         System.out.println(nameAPI);
         Connection conn= DriverManager.getConnection("jdbc:postgresql://157.230.48.97:5432/gmibank_db","techprodb_user","Techpro_@126" );
         Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -283,9 +283,38 @@ pathParam("ID",ID).
                 map.put(metaData.getColumnName(i), resultSet.getObject(i));
             }
         }
-       String nameDB=map.get("first_name")+" "+map.get("last_name");
+        String nameDB=map.get("first_name")+" "+map.get("last_name");
         System.out.println(nameDB);
 
 
     }
+    @Test
+    public void worldBank(){
+        baseURI="https://api.worldbank.org/v2/country/indicator/SP.POP.TOTL?format=json&date=2021&per_page=300";
+        Response response=given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                when().get(baseURI);
+        JsonPath js=response.jsonPath();
+        List<Object> ls=js.getList("");
+        List<Map<String,Object>> ls2=new ArrayList<>();
+        for (Object o:ls) {
+            if(o instanceof List){
+                List<Map<String,Object>> ls3=(List<Map<String,Object>>)o;
+                for (Map<String,Object> map:ls3) {
+                    ls2.add(map);
+                }
+            }
+        }
+        ls2.stream().filter(map->map.get("value")!=null).filter(map->Long.parseLong(map.get("value").toString())>80000000).forEach(map->System.out.println(map.get("value")+" "+map.get("country")));
+    }
 }
+
+
+
+
+
+
+
+
+
