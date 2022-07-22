@@ -308,6 +308,37 @@ public class Deneme {
         }
         ls2.stream().filter(map->map.get("value")!=null).filter(map->Long.parseLong(map.get("value").toString())>80000000).forEach(map->System.out.println(map.get("value")+" "+map.get("country")));
     }
+    @Test
+    public void pojo() throws JsonProcessingException {
+
+        baseURI="https://api.worldbank.org/v2/country/indicator/SP.POP.TOTL?format=json&date=2021&per_page=2";
+        Response response=given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                when().get(baseURI);
+        ObjectMapper mapper=new ObjectMapper();
+        List list = mapper.readValue(response.asString(), List.class);
+        List<Map<String,Object>> ls=new ArrayList<>();
+        for (Object o:list) {
+            if(o instanceof List){
+                List<Map<String,Object>> ls3=(List<Map<String,Object>>)o;
+                for (Map<String,Object> map:ls3) {
+                    ls.add(map);
+                }
+            }
+        }
+        WBPojo wbPojo=new WBPojo();
+        Map<String, Object> additionalProperties = wbPojo.getAdditionalProperties();
+        for (Map<String,Object> map:ls) {
+            if(map.get("country")!=null){
+                additionalProperties.put("country",map.get("country"));
+            }
+            if(map.get("value")!=null){
+                additionalProperties.put("value",map.get("value"));
+            }
+        }
+        System.out.println(additionalProperties.get("country") + " " + additionalProperties.get("value"));
+    }
 }
 
 
