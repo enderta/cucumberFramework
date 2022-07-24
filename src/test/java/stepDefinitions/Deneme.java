@@ -2,6 +2,7 @@ package stepDefinitions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.cucumber.java.it.Ma;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
@@ -290,6 +291,7 @@ public class Deneme {
     }
     @Test
     public void worldBank(){
+
         baseURI="https://api.worldbank.org/v2/country/indicator/SP.POP.TOTL?format=json&date=2021&per_page=300";
         Response response=given().
                 contentType(ContentType.JSON).
@@ -338,6 +340,23 @@ public class Deneme {
             }
         }
         System.out.println(additionalProperties.get("country") + " " + additionalProperties.get("value"));
+    }
+    @Test
+    public void enf(){
+        baseURI="https://inflation-by-api-ninjas.p.rapidapi.com/v1/inflation";
+        Map<String,Object> headers=new HashMap<>();
+        headers.put("x-rapidapi-host","inflation-by-api-ninjas.p.rapidapi.com");
+        headers.put("x-rapidapi-key","07475edaadmsh706c2d5e735b7aep1e4912jsnbb5010132758");
+        Response response=given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                headers(headers).
+                when().get(baseURI);
+        JsonPath js=response.jsonPath();
+        List<Map<String,Object>> ls=js.getList("");
+       ls.stream().filter(m->Double.parseDouble(m.get("yearly_rate_pct").toString())>10).map(m->m.get("country")+" "+m.get("yearly_rate_pct")).forEach(System.out::println);
+        
+
     }
 }
 
