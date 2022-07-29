@@ -343,7 +343,7 @@ public class Deneme {
     }
     @Test
     public void enf(){
-        baseURI="https://inflation-by-api-ninjas.p.rapidapi.com/v1/inflation";
+       /* baseURI="https://inflation-by-api-ninjas.p.rapidapi.com/v1/inflation";
         Map<String,Object> headers=new HashMap<>();
         headers.put("x-rapidapi-host","inflation-by-api-ninjas.p.rapidapi.com");
         headers.put("x-rapidapi-key","07475edaadmsh706c2d5e735b7aep1e4912jsnbb5010132758");
@@ -355,9 +355,36 @@ public class Deneme {
         JsonPath js=response.jsonPath();
         List<Map<String,Object>> ls=js.getList("");
        ls.stream().filter(m->Double.parseDouble(m.get("yearly_rate_pct").toString())>10).map(m->m.get("country")+" "+m.get("yearly_rate_pct")).forEach(System.out::println);
-        
+        */
+
+
 
     }
+    public static int factorial(int n){
+       int res=1;
+         for (int i = 1; i <= n; i++) {
+              res*=i;
+         }
+        return res;
+
+    }
+    public static boolean isFactorial(int n){
+
+        for (int i = 1; i <=n ; i++) {
+            if(factorial(i)==n){
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    @Test
+    public void factorialTest(){
+        System.out.println(isFactorial(27));
+    }
+
 }
 
 
