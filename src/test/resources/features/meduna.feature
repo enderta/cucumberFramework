@@ -1,6 +1,6 @@
 Feature:admin should be login
 
-
+  @meduna
   Scenario Outline:login_with_employee_credentials
     Given user is on the login page and singup page
     And user sends username "<username>" and password "<password>"
@@ -44,7 +44,7 @@ Feature:admin should be login
       | logname |
       | asfg4   |
 
-  @meduna
+
   Scenario Outline: Room creation
     Given user is on the login page and singup page
     And user sends username "adminaccount" and password "12345"
