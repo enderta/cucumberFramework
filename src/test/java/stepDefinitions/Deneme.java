@@ -342,7 +342,7 @@ public class Deneme {
         System.out.println(additionalProperties.get("country") + " " + additionalProperties.get("value"));
     }
     @Test
-    public void enf(){
+    public void enf() throws JsonProcessingException {
        /* baseURI="https://inflation-by-api-ninjas.p.rapidapi.com/v1/inflation";
         Map<String,Object> headers=new HashMap<>();
         headers.put("x-rapidapi-host","inflation-by-api-ninjas.p.rapidapi.com");
@@ -356,6 +356,24 @@ public class Deneme {
         List<Map<String,Object>> ls=js.getList("");
        ls.stream().filter(m->Double.parseDouble(m.get("yearly_rate_pct").toString())>10).map(m->m.get("country")+" "+m.get("yearly_rate_pct")).forEach(System.out::println);
         */
+        Map<String, Object> bdy1 = new HashMap<>();
+        bdy1.put("username", "admin79");
+        bdy1.put("password", "admin");
+        bdy1.put("rememberMe", "true");
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(bdy1);
+        Response response = given().
+                contentType(ContentType.JSON).
+                accept(ContentType.JSON).
+                body(json).
+                when().post("https://medunna.com/api/authenticate").prettyPeek();
+        String tkn = response.jsonPath().getString("id_token");
+
+
+        Response user = given().accept(ContentType.JSON).
+                header("Authorization", "Bearer " + tkn).
+                when().get("https://medunna.com/api/users/"+"patient123" ).prettyPeek()   ;
+        System.out.println(user.jsonPath().getString("firstName"));
 
 
 

@@ -1,6 +1,6 @@
 Feature:admin should be login
 
-  @meduna
+
   Scenario Outline:login_with_employee_credentials
     Given user is on the login page and singup page
     And user sends username "<username>" and password "<password>"
@@ -21,8 +21,8 @@ Feature:admin should be login
       | id    |
       | 83551 |
 
- 
-  Scenario Outline: :Creating user
+  @meduna
+  Scenario Outline: Creating user
     Given user is on the login page and singup page
     And user sends username "adminaccount" and password "12345"
     Then user click administration and click on user management
