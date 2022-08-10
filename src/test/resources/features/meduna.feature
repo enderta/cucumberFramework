@@ -21,7 +21,7 @@ Feature:admin should be login
       | id    |
       | 83551 |
 
-  @meduna
+
   Scenario Outline: Creating user
     Given user is on the login page and singup page
     And user sends username "adminaccount" and password "12345"
@@ -35,7 +35,7 @@ Feature:admin should be login
       | Login | firstname | lastname | email           | ssn         |
       | asfg4 | dsfg      | ksfg     | ksfg4@gmail.com | 515-55-9907 |
 
-
+  @meduna
   Scenario Outline: Deleting user
     Given user is on APi
     When user use delet method by usin "<logname>"

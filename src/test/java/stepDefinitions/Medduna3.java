@@ -108,6 +108,42 @@ select.selectByVisibleText("English");
 
 
   }
+  String tkn="";
+
+  @Given("user is on APi")
+  public void user_is_on_a_pi() throws JsonProcessingException {
+    Map<String, Object> bdy1 = new HashMap<>();
+    bdy1.put("username", "admin79");
+    bdy1.put("password", "admin");
+    bdy1.put("rememberMe", "true");
+    ObjectMapper mapper = new ObjectMapper();
+    String json = mapper.writeValueAsString(bdy1);
+    Response response = given().
+            contentType(ContentType.JSON).
+            accept(ContentType.JSON).
+            body(json).
+            when().post("https://medunna.com/api/authenticate").prettyPeek();
+     tkn = response.jsonPath().getString("id_token");
+  }
+
+  @When("user use delet method by usin {string}")
+  public void user_use_delet_method_by_usin(String log) {
+    this.login=log;
+   given().accept(ContentType.JSON).
+            header("Authorization", "Bearer " + tkn).
+           pathParam("login", log).
+            when().delete("https://medunna.com/api/users/{login}").prettyPeek();
+
+  }
+  @Then("user use get mehtod and not find the user")
+  public void user_use_get_mehtod_and_not_find_the_user() {
+   given().accept(ContentType.JSON).
+            header("Authorization", "Bearer " + tkn).
+         pathParam("login", login).
+            when().get("https://medunna.com/api/users/{login}").then().statusCode(404);
+
+  }
+
 
 
 }
