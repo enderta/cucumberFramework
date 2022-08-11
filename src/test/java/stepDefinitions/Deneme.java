@@ -28,8 +28,10 @@ import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static io.github.bonigarcia.wdm.WebDriverManager.isDockerAvailable;
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
+import static org.junit.Assume.assumeThat;
 
 public class Deneme {
     public int factorial(int[] n) {
@@ -400,7 +402,13 @@ public class Deneme {
 
     @Test
     public void factorialTest(){
-        System.out.println(isFactorial(27));
+       // System.out.println(isFactorial(27));
+        WebDriverManager webDriverManager = WebDriverManager.chromedriver().browserInDocker();
+       // assumeThat(isDockerAvailable()).isTrue();
+        WebDriver driver = webDriverManager.create();
+        driver.get("https://bonigarcia.dev/selenium-webdriverjava/");
+        assert driver.getTitle().contains("Selenium WebDriver");
+
     }
 
 }
