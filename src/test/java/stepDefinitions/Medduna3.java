@@ -13,6 +13,7 @@ import utilities.BrowserUtils;
 import utilities.Driver;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
@@ -143,6 +144,61 @@ select.selectByVisibleText("English");
             when().get("https://medunna.com/api/users/{login}").then().statusCode(404);
 
   }
+  int countryId=0;
+  @Given("user create country in API")
+  public void user_create_country_in_api() throws JsonProcessingException {
+
+      Map<String, Object> bdy = new HashMap<>();
+      bdy.put("username", "admin79");
+      bdy.put("password", "admin");
+      bdy.put("rememberMe", "true");
+      ObjectMapper mapper = new ObjectMapper();
+      String json = mapper.writeValueAsString(bdy);
+      Response response = given().
+              contentType(ContentType.JSON).
+              accept(ContentType.JSON).
+              body(json).
+              when().post("https://medunna.com/api/authenticate").prettyPeek();
+      tkn = response.jsonPath().getString("id_token");
+
+      Map<String,Object> bdy1=new HashMap<>();
+      bdy1.put("name","test234");
+      ObjectMapper mapper1 = new ObjectMapper();
+      String s = mapper1.writeValueAsString(bdy1);
+      Response posCountry = given().
+              contentType(ContentType.JSON).
+              accept(ContentType.JSON).
+              body(s).
+              header("Authorization", "Bearer " + tkn).
+              when().post("https://medunna.com/api/countries").prettyPeek();
+    countryId=posCountry.jsonPath().getInt("id");
+
+
+  }
+  @Then("user click administration and click on country management")
+  public void user_click_administration_and_click_on_country_management() {
+    Driver.get().findElement(By.xpath("//span[.='Items&Titles']")).click();
+    Driver.get().findElement(By.xpath("//span[.='Country']")).click();
+    List<WebElement> elements = Driver.get().findElements(By.xpath("//tbody//tr//td[1]"));
+    BrowserUtils.waitFor(4);
+    for (WebElement element : elements) {
+     if( Integer.parseInt(element.getText())== countryId){
+       Assert.assertTrue(true);
+       break;
+     }
+
+    }
+
+  }
+  @Then("the user should see the country created in the API on the list")
+  public void the_user_should_see_the_country_created_in_the_api_on_the_list() {
+    Response delCountry = given().accept(ContentType.JSON).
+            header("Authorization", "Bearer " + tkn).
+           pathParams("id", countryId).
+            when().delete("https://medunna.com/api/countries/{id}").prettyPeek();
+    Assert.assertEquals(delCountry.statusCode(), 204);
+  }
+
 
 
 
