@@ -44,7 +44,7 @@ Feature:admin should be login
       | logname |
       | asfg4   |
 
-
+  @meduna
   Scenario Outline: Room creation
     Given user is on the login page and singup page
     And user sends username "adminaccount" and password "12345"
@@ -57,7 +57,7 @@ Feature:admin should be login
     Examples:
       | roomnumber | roomtype | roomprice | roomdescription |
       | 80002      | TWIN     | 100       | with TV         |
-  @meduna
+
     Scenario: Country creation
         Given user create country in API
         Given user is on the login page and singup page
