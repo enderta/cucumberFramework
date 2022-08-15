@@ -51,12 +51,10 @@ Feature:admin should be login
     Then user click administration and click on room management
     And user click on add room
     When enter "<roomnumber>" "<roomtype>" "<roomprice>" "<roomdescription>"
-    Then user click on save
-    Then user should see the room created successfully
     Then user sees this room in api and db
     Examples:
       | roomnumber | roomtype | roomprice | roomdescription |
-      | 80002      | TWIN     | 100       | with TV         |
+      | 800789      | TWIN     | 100       | with TV         |
 
     Scenario: Country creation
         Given user create country in API
