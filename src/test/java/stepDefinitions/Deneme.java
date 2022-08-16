@@ -7,6 +7,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -403,33 +404,18 @@ public class Deneme {
     @Test
     public void factorialTest() throws JsonProcessingException {
        // System.out.println(isFactorial(27));
-        WebDriverManager webDriverManager = WebDriverManager.chromedriver().browserInDocker();
+      //  WebDriverManager webDriverManager = WebDriverManager.chromedriver().browserInDocker();
        // assumeThat(isDockerAvailable()).isTrue();
       /*  WebDriver driver = webDriverManager.create();
         driver.get("https://bonigarcia.dev/selenium-webdriverjava/");
         assert driver.getTitle().contains("Selenium WebDriver");
-*/
-
-        Map<String, Object> bdy1 = new HashMap<>();
-        bdy1.put("username", "admin79");
-        bdy1.put("password", "admin");
-        bdy1.put("rememberMe", "true");
-        ObjectMapper mapper = new ObjectMapper();
+*/      Map<String,Object> bdy1 = new HashMap<>();
+ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(bdy1);
-        Response response = given().
-                contentType(ContentType.JSON).
-                accept(ContentType.JSON).
-                body(json).
-                when().post("https://medunna.com/api/authenticate").prettyPeek();
-        String tkn = response.jsonPath().getString("id_token");
+        bdy1.put("search_product","top");
+        given().accept(ContentType.JSON).
 
-        Map<String, Object> bdy2 = new HashMap<>();
-        bdy2.put("name", "Egypt");
-        Response posCountry = given().accept(ContentType.JSON).
-                header("Authorization", "Bearer " + tkn).
-                body(bdy2).
-                when().post("https://medunna.com/api/countries").prettyPeek();
-     //   countryId=posCountry.jsonPath().getInt("id");
+                when().post("https://automationexercise.com/api/searchProduct/{search_product}") .prettyPeek();
 
     }
 
