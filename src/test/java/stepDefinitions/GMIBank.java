@@ -1,3 +1,4 @@
+/*
 package stepDefinitions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -216,3 +217,4 @@ public class GMIBank {
 
 //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
 }
+*/

@@ -1,6 +1,6 @@
 Feature: GMI Bank
-
-  Background: Login
+  @gmi
+  Scenario:  Login
     Given User is on the GMIBank login page
     When User enters valid "gino.wintheiser" and "%B6B*q1!TH"
 
@@ -31,7 +31,7 @@ Feature: GMI Bank
     Examples:
       | ID |
       |123169|
-  @gmi
+
   Scenario Outline:  Update country bank8
     Given update created a country using api end point "<name>" and its extension "<id>" bank8
     Examples: Update country bank8
