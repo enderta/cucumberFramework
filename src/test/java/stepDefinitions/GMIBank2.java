@@ -74,5 +74,38 @@ public class GMIBank2 {
     List<Map<String,Object>> list = jp.getList("");
     list.stream().map(x->x.get("id")).forEach(System.out::println);
   }
+  Connection con=null;
+  Statement st=null;
+  ResultSet rs=null;
+  ResultSetMetaData metaData=null;
 
+  @Given("user is logging to the GMI DB")
+  public void user_is_logging_to_the_gmi_db() throws SQLException {
+
+
+      con = DriverManager.getConnection("jdbc:postgresql://157.230.48.97:5432/gmibank_db","techprodb_user","Techpro_@126");
+       st = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+       rs = st.executeQuery("select * from tp_customer");
+     metaData = rs.getMetaData();
+
+
+  }
+  List<Map<String,Object>> list= new ArrayList<>();
+  @When("user sends get request to the DB")
+  public void user_sends_get_request_to_the_db() throws SQLException {
+
+    while(rs.next()){
+      Map<String,Object> map = new HashMap<>();
+      for(int i=1;i<=metaData.getColumnCount();i++){
+        map.put(metaData.getColumnName(i),rs.getObject(i));
+      }
+      list.add(map);
+    }
+   // System.out.println(list);
+
+  }
+  @Then("user should be able to login successfully DB")
+  public void user_should_be_able_to_login_successfully_db() {
+   list.stream().filter(x->x.get("first_name").equals("Joe")).map(x->x.get("last_name")).forEach(System.out::println);
+  }
 }
