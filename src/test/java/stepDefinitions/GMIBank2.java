@@ -108,4 +108,49 @@ public class GMIBank2 {
   public void user_should_be_able_to_login_successfully_db() {
    list.stream().filter(x->x.get("first_name").equals("Joe")).map(x->x.get("last_name")).forEach(System.out::println);
   }
+String nameUI="";
+  String lastNameUI="";
+  @Given("user is getting info about acc of {string} from UI")
+  public void user_is_getting_info_about_acc_of_from_ui(String id) {
+   Driver.get().findElement(By.id("entity-menu")).click();
+    Driver.get().findElement(By.xpath("//*[.='Manage Customers']")).click();
+    Driver.get().findElement(By.xpath("//tbody//td[1][.='"+id+"']")).click();
+    BrowserUtils.waitFor(4);
+    nameUI=Driver.get().findElement(By.xpath("(//dt//span[@id='firstName']//..//..//..//dd)[1]")).getText();
+    lastNameUI=Driver.get().findElement(By.xpath("(//dt//span[@id='lastName']//..//..//..//dd)[2]")).getText();
+  }
+  String nameAPI="";
+  String lastNameAPI="";
+  @Then("user should be able to get info about acc of {string} from DB And API")
+  public void user_should_be_able_to_get_info_about_acc_of_from_db_and_api(String id) throws JsonProcessingException {
+    baseURI="https://www.gmibank.com/api/";
+    Map<String,Object> bdy= new HashMap<>();
+    bdy.put("username","team18_admin");
+    bdy.put("password","Team18admin");
+    bdy.put("rememberme","true");
+    ObjectMapper mapper = new ObjectMapper();
+    String s = mapper.writeValueAsString(bdy);
+    Response authorization = given().contentType(ContentType.JSON)
+            .accept(ContentType.JSON).
+            body(s).
+            when().
+            post("authenticate");
+   tkn = authorization.jsonPath().getString("id_token");
+    Response authorization1 = given().accept(ContentType.JSON).
+            header("Authorization", "Bearer " + tkn).
+            when().
+            get("tp-customers/"+id);
+    JsonPath jp = authorization1.jsonPath();
+    nameAPI=jp.getString("firstName");
+    lastNameAPI=jp.getString("lastName");
+
+
+    tkn = authorization.jsonPath().getString("id_token");
+  }
+  @Then("all same acc info should be same")
+  public void all_same_acc_info_should_be_same() {
+    Assert.assertEquals(nameUI,nameAPI);
+    Assert.assertEquals(lastNameUI,lastNameAPI);
+  }
+
 }

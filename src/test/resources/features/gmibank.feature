@@ -1,10 +1,10 @@
 Feature: GMI Bank
 
-  Scenario:  Login
+  Background:   Login
     Given User is on the GMIBank login page
     When User enters valid "gino.wintheiser" and "%B6B*q1!TH"
 
-  @gmi
+
   Scenario: Login DB
     Given user is logging to the GMI DB
     When user sends get request to the DB
@@ -21,16 +21,16 @@ Feature: GMI Bank
     Then all the info should be same
     Examples:
       | ID |
-      |38016|
+      |39079|
 
-
+  @gmi
   Scenario Outline: Accounts
     Given user is getting info about acc of "<ID>" from UI
     Then user should be able to get info about acc of "<ID>" from DB And API
     Then all same acc info should be same
     Examples:
       | ID |
-      |123169|
+      |39079|
 
   Scenario Outline:  Update country bank8
     Given update created a country using api end point "<name>" and its extension "<id>" bank8
