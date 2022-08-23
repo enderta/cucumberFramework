@@ -153,4 +153,47 @@ String nameUI="";
     Assert.assertEquals(lastNameUI,lastNameAPI);
   }
 
+  @Given("update created a country using api end point {string} and its extension {string} bank8")
+  public void update_created_a_country_using_api_end_point_and_its_extension_bank8(String name, String string2) throws JsonProcessingException {
+    baseURI="https://www.gmibank.com/api/";
+    Map<String,Object> bdy= new HashMap<>();
+    bdy.put("username","team18_admin");
+    bdy.put("password","Team18admin");
+    bdy.put("rememberme","true");
+    ObjectMapper mapper = new ObjectMapper();
+    String s = mapper.writeValueAsString(bdy);
+    Response authorization = given().contentType(ContentType.JSON)
+            .accept(ContentType.JSON).
+            body(s).
+            when().
+            post("authenticate");
+    tkn = authorization.jsonPath().getString("id_token");
+    Map<String,Object> bdy2= new HashMap<>();
+    bdy2.put("name",name);
+
+    ObjectMapper mapper2 = new ObjectMapper();
+    String s2 = mapper2.writeValueAsString(bdy2);
+    Response authorization1 = given().contentType(ContentType.JSON)
+            .accept(ContentType.JSON).
+            header("Authorization", "Bearer " + tkn).
+            body(s2).
+            when().
+            post("tp-countries");
+    JsonPath jp = authorization1.jsonPath();
+
+    String id = jp.getString("id");
+    String name1 = jp.getString("name");
+    given().accept(ContentType.JSON).
+            header("Authorization", "Bearer " + tkn).
+            when().
+            get("tp-countries/"+id);
+  Assert.assertEquals(name,name1);
+    given().accept(ContentType.JSON).
+            header("Authorization", "Bearer " + tkn).
+            when().
+            delete("tp-countries/"+id).prettyPrint();
+
+
+  }
+
 }

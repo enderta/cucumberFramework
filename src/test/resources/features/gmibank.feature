@@ -23,7 +23,7 @@ Feature: GMI Bank
       | ID |
       |39079|
 
-  @gmi
+
   Scenario Outline: Accounts
     Given user is getting info about acc of "<ID>" from UI
     Then user should be able to get info about acc of "<ID>" from DB And API
@@ -31,7 +31,7 @@ Feature: GMI Bank
     Examples:
       | ID |
       |39079|
-
+  @gmi
   Scenario Outline:  Update country bank8
     Given update created a country using api end point "<name>" and its extension "<id>" bank8
     Examples: Update country bank8

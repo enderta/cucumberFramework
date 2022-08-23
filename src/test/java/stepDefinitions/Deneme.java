@@ -409,13 +409,57 @@ public class Deneme {
       /*  WebDriver driver = webDriverManager.create();
         driver.get("https://bonigarcia.dev/selenium-webdriverjava/");
         assert driver.getTitle().contains("Selenium WebDriver");
-*/      Map<String,Object> bdy1 = new HashMap<>();
+*/     /* Map<String,Object> bdy1 = new HashMap<>();
 ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(bdy1);
         bdy1.put("search_product","top");
         given().accept(ContentType.JSON).
 
-                when().post("https://automationexercise.com/api/searchProduct/{search_product}") .prettyPeek();
+                when().post("https://automationexercise.com/api/searchProduct/{search_product}") .prettyPeek();*/
+        baseURI="https://www.gmibank.com/api/";
+        Map<String,Object> bdy= new HashMap<>();
+        bdy.put("username","team18_admin");
+        bdy.put("password","Team18admin");
+        bdy.put("rememberme","true");
+        ObjectMapper mapper = new ObjectMapper();
+        String s = mapper.writeValueAsString(bdy);
+        Response authorization = given().contentType(ContentType.JSON)
+                .accept(ContentType.JSON).
+                body(s).
+                when().
+                post("authenticate");
+        String tkn = authorization.jsonPath().getString("id_token");
+        Map<String,Object> bdy2= new HashMap<>();
+        String name="Far";
+        bdy2.put("name",name);
+
+        ObjectMapper mapper2 = new ObjectMapper();
+        String s2 = mapper2.writeValueAsString(bdy2);
+        Response authorization1 = given().contentType(ContentType.JSON)
+                .accept(ContentType.JSON).
+                header("Authorization", "Bearer " + tkn).
+                body(s2).
+                when().
+                post("tp-countries");
+        JsonPath jp = authorization1.jsonPath();
+
+        String id = jp.getString("id");
+        System.out.println(id);
+        String name1 = jp.getString("name");
+        Response authorization2 = given().accept(ContentType.JSON).
+                header("Authorization", "Bearer " + tkn).
+                when().
+                get("tp-countries/" + "24123");
+        JsonPath jp2 = authorization2.jsonPath();
+        String name2 = jp2.getString("name");
+        System.out.println(name1);
+        System.out.println(name2);
+      //  assert name1.equals(name2);
+        String authorization3 = given().accept(ContentType.JSON).
+                header("Authorization", "Bearer " + tkn).
+                when().
+                delete("tp-countries/" + "24123").prettyPrint();
+        System.out.println(authorization3);
 
     }
 
