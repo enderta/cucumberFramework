@@ -429,37 +429,14 @@ ObjectMapper mapper = new ObjectMapper();
                 when().
                 post("authenticate");
         String tkn = authorization.jsonPath().getString("id_token");
-        Map<String,Object> bdy2= new HashMap<>();
-        String name="Far";
-        bdy2.put("name",name);
-
-        ObjectMapper mapper2 = new ObjectMapper();
-        String s2 = mapper2.writeValueAsString(bdy2);
-        Response authorization1 = given().contentType(ContentType.JSON)
-                .accept(ContentType.JSON).
+        Response accs = given().accept(ContentType.JSON).
                 header("Authorization", "Bearer " + tkn).
-                body(s2).
-                when().
-                post("tp-countries");
-        JsonPath jp = authorization1.jsonPath();
-
-        String id = jp.getString("id");
-        System.out.println(id);
-        String name1 = jp.getString("name");
-        Response authorization2 = given().accept(ContentType.JSON).
-                header("Authorization", "Bearer " + tkn).
-                when().
-                get("tp-countries/" + "24123");
-        JsonPath jp2 = authorization2.jsonPath();
-        String name2 = jp2.getString("name");
-        System.out.println(name1);
-        System.out.println(name2);
-      //  assert name1.equals(name2);
-        String authorization3 = given().accept(ContentType.JSON).
-                header("Authorization", "Bearer " + tkn).
-                when().
-                delete("tp-countries/" + "24123").prettyPrint();
-        System.out.println(authorization3);
+                when().get("tp-accounts");
+        JsonPath js2= accs.jsonPath();
+        List<Map<String,Object>> list = js2.getList("");
+        List<Map<String, Object>> balance = list.stream().filter(m -> Double.parseDouble(m.get("balance").toString()) > 4000).collect(Collectors.toList());
+        int accountType = balance.stream().map(m -> m.get("accountType")).collect(Collectors.toCollection(ArrayList::new)).size();
+        System.out.println(accountType);
 
     }
 
