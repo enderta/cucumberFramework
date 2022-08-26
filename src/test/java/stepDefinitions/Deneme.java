@@ -402,7 +402,7 @@ public class Deneme {
     }
 
     @Test
-    public void factorialTest() throws JsonProcessingException {
+    public void factorialTest() throws JsonProcessingException, SQLException {
        // System.out.println(isFactorial(27));
       //  WebDriverManager webDriverManager = WebDriverManager.chromedriver().browserInDocker();
        // assumeThat(isDockerAvailable()).isTrue();
@@ -431,12 +431,27 @@ ObjectMapper mapper = new ObjectMapper();
         String tkn = authorization.jsonPath().getString("id_token");
         Response accs = given().accept(ContentType.JSON).
                 header("Authorization", "Bearer " + tkn).
-                when().get("tp-accounts");
+                when().get("users");
         JsonPath js2= accs.jsonPath();
         List<Map<String,Object>> list = js2.getList("");
-        List<Map<String, Object>> balance = list.stream().filter(m -> Double.parseDouble(m.get("balance").toString()) > 4000).collect(Collectors.toList());
-        int accountType = balance.stream().map(m -> m.get("accountType")).collect(Collectors.toCollection(ArrayList::new)).size();
-        System.out.println(accountType);
+       Connection con= DriverManager.getConnection("jdbc:postgresql://157.230.48.97:5432/gmibank_db","techprodb_user","Techpro_@126");
+        Statement statement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        ResultSet rs = statement.executeQuery("select * from jhi_user");
+        ResultSetMetaData metaData = rs.getMetaData();
+        List<Map<String,Object>> ls=new ArrayList<>();
+        while (rs.next()) {
+            Map<String,Object> map=new HashMap<>();
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                map.put(metaData.getColumnName(i),rs.getObject(i));
+            }
+            ls.add(map);
+        }
+       ls.stream().filter(m->m.get("id").toString().equals("114348")).map(m->m.get("first_name"))
+               .forEach(System.out::println);
+        list.stream().filter(m->m.get("id").toString().equals("114348")).map(m->m.get("firstName"))
+                .forEach(System.out::println);
+
+
 
     }
 
