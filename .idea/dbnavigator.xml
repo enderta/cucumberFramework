@@ -51,7 +51,8 @@ select * from room]]></console>
       <console name="Connection 4" type="STANDARD" schema="public" session="Main"><![CDATA[select * from tp_customer where user_id=39079
 select * from jhi_user where id=114348
 select * from tp_customer_account
-    select * from tp_account
+    select * from tp_account where id =123169
+    
 select * from tp_customer_account where tpcustomer_id=86693
 select a.first_name,a.last_name,a.id,c.tpcustomer_id,c.account_id from tp_customer a join tp_customer_account c on a.id=c.tpcustomer_id where c.tpcustomer_id=123169 
 select a.first_name,a.last_name,u.* from tp_customer a join jhi_user u on a.user_id=u.id where a.first_name='Ali']]></console>

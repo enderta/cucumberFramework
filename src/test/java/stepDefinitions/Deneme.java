@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 import static io.github.bonigarcia.wdm.WebDriverManager.isDockerAvailable;
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assume.assumeThat;
 
 public class Deneme {
@@ -453,6 +454,39 @@ ObjectMapper mapper = new ObjectMapper();
 
 
 
+    }
+    @ParameterizedTest
+    @ValueSource(ints={123169,3976})
+    public void testingDB(int id) throws SQLException, JsonProcessingException {
+        Connection con = DriverManager.getConnection("jdbc:postgresql://157.230.48.97:5432/gmibank_db", "techprodb_user", "Techpro_@126");
+        Statement statement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        ResultSet rs = statement.executeQuery(" select * from tp_account where id =" + id);
+        ResultSetMetaData metaData = rs.getMetaData();
+        Map<String, Object> map = new HashMap<>();
+        while (rs.next()) {
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                map.put(metaData.getColumnName(i), rs.getObject(i));
+            }
+        }
+        baseURI="https://www.gmibank.com/api/";
+        Map<String,Object> bdy= new HashMap<>();
+        bdy.put("username","team18_admin");
+        bdy.put("password","Team18admin");
+        bdy.put("rememberme","true");
+        ObjectMapper mapper = new ObjectMapper();
+        String s = mapper.writeValueAsString(bdy);
+        Response authorization = given().contentType(ContentType.JSON)
+                .accept(ContentType.JSON).
+                body(s).
+                when().
+                post("authenticate");
+        String tkn = authorization.jsonPath().getString("id_token");
+        Response accs = given().accept(ContentType.JSON).
+                header("Authorization", "Bearer " + tkn).
+                when().get("tp-accounts/"+id);
+        JsonPath js2= accs.jsonPath();
+        Map<String,Object> map2 = js2.getMap("");
+        assertEquals(map.get("description"),map2.get("description"));
     }
 
 }
