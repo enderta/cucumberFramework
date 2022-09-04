@@ -458,7 +458,7 @@ ObjectMapper mapper = new ObjectMapper();
     @ParameterizedTest
     @ValueSource(ints={123169,3976})
     public void testingDB(int id) throws SQLException, JsonProcessingException {
-        Connection con = DriverManager.getConnection("jdbc:postgresql://157.230.48.97:5432/gmibank_db", "techprodb_user", "Techpro_@126");
+       /* Connection con = DriverManager.getConnection("jdbc:postgresql://157.230.48.97:5432/gmibank_db", "techprodb_user", "Techpro_@126");
         Statement statement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         ResultSet rs = statement.executeQuery(" select * from tp_account where id =" + id);
         ResultSetMetaData metaData = rs.getMetaData();
@@ -467,7 +467,7 @@ ObjectMapper mapper = new ObjectMapper();
             for (int i = 1; i <= metaData.getColumnCount(); i++) {
                 map.put(metaData.getColumnName(i), rs.getObject(i));
             }
-        }
+        }*/
         baseURI="https://www.gmibank.com/api/";
         Map<String,Object> bdy= new HashMap<>();
         bdy.put("username","team18_admin");
@@ -483,10 +483,13 @@ ObjectMapper mapper = new ObjectMapper();
         String tkn = authorization.jsonPath().getString("id_token");
         Response accs = given().accept(ContentType.JSON).
                 header("Authorization", "Bearer " + tkn).
-                when().get("tp-accounts/"+id);
+                when().get("tp-accounts/");
         JsonPath js2= accs.jsonPath();
-        Map<String,Object> map2 = js2.getMap("");
-        assertEquals(map.get("description"),map2.get("description"));
+       List<Map<String,Object>> map2 = js2.getList("");
+         //System.out.println(map2);
+        map2.stream().filter(m->m.get("accountType").toString().equalsIgnoreCase("Saving"))
+                .forEach(System.out::println);
+
     }
 
 }

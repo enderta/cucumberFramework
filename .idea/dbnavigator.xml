@@ -369,7 +369,7 @@ select a.first_name,a.last_name,u.* from tp_customer a join jhi_user u on a.user
           <database value="cyf_hotels" />
           <type value="USER_PASSWORD" />
           <user value="ender" />
-          <deprecated-pwd value="ZW5kZXI=" />
+          <deprecated-pwd value="" />
         </database>
         <properties>
           <auto-commit value="false" />
