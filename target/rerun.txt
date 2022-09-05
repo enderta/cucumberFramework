@@ -1,1 +1,1 @@
-file:src/test/resources/features/zeroBank.feature:5
+file:src/test/resources/features/gmibank.feature:3

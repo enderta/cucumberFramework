@@ -1,3 +1,4 @@
+/*
 package stepDefinitions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -347,7 +348,8 @@ public class Deneme {
     }
     @Test
     public void enf() throws JsonProcessingException {
-       /* baseURI="https://inflation-by-api-ninjas.p.rapidapi.com/v1/inflation";
+       */
+/* baseURI="https://inflation-by-api-ninjas.p.rapidapi.com/v1/inflation";
         Map<String,Object> headers=new HashMap<>();
         headers.put("x-rapidapi-host","inflation-by-api-ninjas.p.rapidapi.com");
         headers.put("x-rapidapi-key","07475edaadmsh706c2d5e735b7aep1e4912jsnbb5010132758");
@@ -359,7 +361,8 @@ public class Deneme {
         JsonPath js=response.jsonPath();
         List<Map<String,Object>> ls=js.getList("");
        ls.stream().filter(m->Double.parseDouble(m.get("yearly_rate_pct").toString())>10).map(m->m.get("country")+" "+m.get("yearly_rate_pct")).forEach(System.out::println);
-        */
+        *//*
+
         Map<String, Object> bdy1 = new HashMap<>();
         bdy1.put("username", "admin79");
         bdy1.put("password", "admin");
@@ -407,16 +410,20 @@ public class Deneme {
        // System.out.println(isFactorial(27));
       //  WebDriverManager webDriverManager = WebDriverManager.chromedriver().browserInDocker();
        // assumeThat(isDockerAvailable()).isTrue();
-      /*  WebDriver driver = webDriverManager.create();
+      */
+/*  WebDriver driver = webDriverManager.create();
         driver.get("https://bonigarcia.dev/selenium-webdriverjava/");
         assert driver.getTitle().contains("Selenium WebDriver");
-*/     /* Map<String,Object> bdy1 = new HashMap<>();
+*//*
+     */
+/* Map<String,Object> bdy1 = new HashMap<>();
 ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(bdy1);
         bdy1.put("search_product","top");
         given().accept(ContentType.JSON).
 
-                when().post("https://automationexercise.com/api/searchProduct/{search_product}") .prettyPeek();*/
+                when().post("https://automationexercise.com/api/searchProduct/{search_product}") .prettyPeek();*//*
+
         baseURI="https://www.gmibank.com/api/";
         Map<String,Object> bdy= new HashMap<>();
         bdy.put("username","team18_admin");
@@ -458,7 +465,8 @@ ObjectMapper mapper = new ObjectMapper();
     @ParameterizedTest
     @ValueSource(ints={123169,3976})
     public void testingDB(int id) throws SQLException, JsonProcessingException {
-       /* Connection con = DriverManager.getConnection("jdbc:postgresql://157.230.48.97:5432/gmibank_db", "techprodb_user", "Techpro_@126");
+       */
+/* Connection con = DriverManager.getConnection("jdbc:postgresql://157.230.48.97:5432/gmibank_db", "techprodb_user", "Techpro_@126");
         Statement statement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         ResultSet rs = statement.executeQuery(" select * from tp_account where id =" + id);
         ResultSetMetaData metaData = rs.getMetaData();
@@ -467,7 +475,8 @@ ObjectMapper mapper = new ObjectMapper();
             for (int i = 1; i <= metaData.getColumnCount(); i++) {
                 map.put(metaData.getColumnName(i), rs.getObject(i));
             }
-        }*/
+        }*//*
+
         baseURI="https://www.gmibank.com/api/";
         Map<String,Object> bdy= new HashMap<>();
         bdy.put("username","team18_admin");
@@ -502,3 +511,4 @@ ObjectMapper mapper = new ObjectMapper();
 
 
 
+*/
