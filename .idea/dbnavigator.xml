@@ -57,6 +57,10 @@ select * from tp_customer_account where tpcustomer_id=86693
 select a.first_name,a.last_name,a.id,c.tpcustomer_id,c.account_id from tp_customer a join tp_customer_account c on a.id=c.tpcustomer_id where c.tpcustomer_id=123169 
 select a.first_name,a.last_name,u.* from tp_customer a join jhi_user u on a.user_id=u.id where a.first_name='Ali']]></console>
     </connection>
+    <connection id="b31969dd-f181-4f76-a208-ed7fcd37904a">
+      <console name="Connection 5" type="STANDARD" schema="information_schema" session="Main" />
+      <console name="Connection 5 1" type="STANDARD" schema="public" session="Main" />
+    </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
@@ -67,6 +71,7 @@ select a.first_name,a.last_name,u.* from tp_customer a join jhi_user u on a.user
     <connection id="860f27fb-555e-44ff-8d78-9c11361f575d" />
     <connection id="f62a60ec-c9f0-4c4e-ad29-2dd412917318" />
     <connection id="ff567d67-046b-4ae5-b89d-c9765d55ccdb" />
+    <connection id="b31969dd-f181-4f76-a208-ed7fcd37904a" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="ba94b76a-0e8a-403b-89b3-a97f1cef5fc8" dataset="public.campus" active-filter-id="" />
@@ -97,7 +102,9 @@ select a.first_name,a.last_name,u.* from tp_customer a join jhi_user u on a.user
     <diagnostics-history />
   </component>
   <component name="DBNavigator.Project.ScriptExecutionManager" clear-outputs="true">
-    <recently-used-interfaces />
+    <recently-used-interfaces>
+      <mapping database-type="POSTGRES" interface-id="DEFAULT" />
+    </recently-used-interfaces>
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
@@ -521,6 +528,90 @@ select a.first_name,a.last_name,u.* from tp_customer a join jhi_user u on a.user
           <object-name-filters />
         </object-filters>
       </connection>
+      <connection id="b31969dd-f181-4f76-a208-ed7fcd37904a" active="true" signed="true">
+        <database>
+          <name value="Connection 5" />
+          <description value="" />
+          <database-type value="POSTGRES" />
+          <config-type value="BASIC" />
+          <database-version value="14.5" />
+          <driver-source value="BUILTIN" />
+          <driver-library value="" />
+          <driver value="" />
+          <url-type value="DATABASE" />
+          <host value="localhost" />
+          <port value="5432" />
+          <database value="postgres" />
+          <type value="USER_PASSWORD" />
+          <user value="postgres" />
+          <deprecated-pwd value="ZW5kZXI=" />
+        </database>
+        <properties>
+          <auto-commit value="false" />
+        </properties>
+        <ssh-settings>
+          <active value="false" />
+          <proxy-host value="" />
+          <proxy-port value="22" />
+          <proxy-user value="" />
+          <deprecated-proxy-pwd value="" />
+          <auth-type value="PASSWORD" />
+          <key-file value="" />
+          <key-passphrase value="" />
+        </ssh-settings>
+        <ssl-settings>
+          <active value="false" />
+          <certificate-authority-file value="" />
+          <client-certificate-file value="" />
+          <client-key-file value="" />
+        </ssl-settings>
+        <details>
+          <charset value="UTF-8" />
+          <session-management value="true" />
+          <ddl-file-binding value="true" />
+          <database-logging value="true" />
+          <connect-automatically value="true" />
+          <restore-workspace value="true" />
+          <restore-workspace-deep value="false" />
+          <environment-type value="default" />
+          <connectivity-timeout value="5" />
+          <idle-time-to-disconnect value="30" />
+          <idle-time-to-disconnect-pool value="5" />
+          <credential-expiry-time value="10" />
+          <max-connection-pool-size value="7" />
+          <alternative-statement-delimiter value="" />
+        </details>
+        <object-filters hide-empty-schemas="false" hide-pseudo-columns="false">
+          <object-type-filter>
+            <object-type name="SCHEMA" enabled="true" />
+            <object-type name="USER" enabled="true" />
+            <object-type name="ROLE" enabled="true" />
+            <object-type name="PRIVILEGE" enabled="true" />
+            <object-type name="CHARSET" enabled="true" />
+            <object-type name="TABLE" enabled="true" />
+            <object-type name="VIEW" enabled="true" />
+            <object-type name="MATERIALIZED_VIEW" enabled="true" />
+            <object-type name="NESTED_TABLE" enabled="true" />
+            <object-type name="COLUMN" enabled="true" />
+            <object-type name="INDEX" enabled="true" />
+            <object-type name="CONSTRAINT" enabled="true" />
+            <object-type name="DATASET_TRIGGER" enabled="true" />
+            <object-type name="DATABASE_TRIGGER" enabled="true" />
+            <object-type name="SYNONYM" enabled="true" />
+            <object-type name="SEQUENCE" enabled="true" />
+            <object-type name="PROCEDURE" enabled="true" />
+            <object-type name="FUNCTION" enabled="true" />
+            <object-type name="PACKAGE" enabled="true" />
+            <object-type name="TYPE" enabled="true" />
+            <object-type name="TYPE_ATTRIBUTE" enabled="true" />
+            <object-type name="ARGUMENT" enabled="true" />
+            <object-type name="DIMENSION" enabled="true" />
+            <object-type name="CLUSTER" enabled="true" />
+            <object-type name="DBLINK" enabled="true" />
+          </object-type-filter>
+          <object-name-filters />
+        </object-filters>
+      </connection>
     </connections>
     <browser-settings>
       <general>
@@ -851,7 +942,7 @@ select a.first_name,a.last_name,u.* from tp_customer a join jhi_user u on a.user
     <operation-settings>
       <transactions>
         <uncommitted-changes>
-          <on-project-close value="ASK" />
+          <on-project-close value="COMMIT" />
           <on-disconnect value="ASK" />
           <on-autocommit-toggle value="ASK" />
         </uncommitted-changes>

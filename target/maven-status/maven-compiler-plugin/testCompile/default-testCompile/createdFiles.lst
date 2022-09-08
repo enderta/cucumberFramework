@@ -3,6 +3,7 @@ pages/BookItPages.class
 runners/CukesRunner.class
 utilities/BookitAPI.class
 utilities/BrowserUtils$1.class
+stepDefinitions/Lib.class
 stepDefinitions/ZeroBank.class
 pages/BritPAge.class
 stepDefinitions/GMIBank2.class
@@ -10,7 +11,6 @@ runners/FailedTestRunner.class
 utilities/BrowserUtils.class
 pages/LibPages.class
 pages/GMIPages.class
-stepDefinitions/LibStepDefs.class
 stepDefinitions/BritStepDef.class
 utilities/SpartanApiDB.class
 utilities/DBUtils.class
