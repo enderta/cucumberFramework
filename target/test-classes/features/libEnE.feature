@@ -1,5 +1,5 @@
 Feature: End to end login test
-  @lib
+
   Scenario: Login as a student to UI
     Given the user is on the Library app login page
     When  the user logs in as librarian
@@ -8,7 +8,7 @@ Feature: End to end login test
   Scenario: Login as a librarian to UI
     Given the user is on the Library app login page
     When the user logs in as librarian
-
+  @lib
   Scenario: Checking dashboard datas
     Given the user is on the Library app login page
     When the user logs in as librarian

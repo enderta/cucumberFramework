@@ -17,7 +17,7 @@ public class    API {
         baseURI = "https://library2.cybertekschool.com/rest/v1/login";
         Response post = given().contentType(ContentType.URLENC)
                 .formParam("email", email)
-                .formParam("password", password)
+                    .formParam("password", password)
                 .post().prettyPeek();
         token = post.path("token");
 

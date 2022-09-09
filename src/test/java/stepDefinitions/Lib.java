@@ -18,4 +18,14 @@ public class Lib {
         Driver.get().findElement(By.id("navbarDropdown")).click();
        Driver.get().findElement(By.xpath("//a[.='Log Out']")).click();
     }
+    @When("the user logs in as librarian to API")
+    public void the_user_logs_in_as_librarian_to_api() {
+
+    }
+    @Then("the informations getting from API and UI should be matched")
+    public void the_informations_getting_from_api_and_ui_should_be_matched() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new io.cucumber.java.PendingException();
+    }
+
 }
