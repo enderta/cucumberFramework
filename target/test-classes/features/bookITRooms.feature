@@ -2,6 +2,7 @@
   Feature: Rooms
     Background:
       Given user logs in using "sbirdbj@fc2.com" "asenorval"
+
     @bookITRooms
     Scenario Outline: Rooms info
       Given user is on the "<Rooms>" page
