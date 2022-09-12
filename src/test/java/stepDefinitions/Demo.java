@@ -44,20 +44,16 @@ import static io.restassured.RestAssured.given;
 
 public class Demo {
     @Test
-    public void test1() throws SQLException {
-      Connection connection = DriverManager.getConnection("jdbc:oracle:thin:@54.87.41.10:1521:xe", "hr", "hr");
-        Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-        ResultSet resultSet = statement.executeQuery("select * from employees");
-        ResultSetMetaData metaData = resultSet.getMetaData();
-        System.out.println(metaData.getColumnCount());
-        List<Map<String, Object>> list = new ArrayList<>();
-        while (resultSet.next()) {
-            Map<String, Object> row = new HashMap<>();
-            for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                row.put(metaData.getColumnName(i), resultSet.getObject(i));
-            }
-            list.add(row);
-        }
-       list.stream().forEach(System.out::println);
+    public void test1() throws SQLException, JsonProcessingException {
+        baseURI= "https://library2.cydeo.com/rest/v1/";
+        Map<String,Object> map=new HashMap<>();
+        map.put("email","librarian24@library");
+        map.put("password","8v8ZByKA");
+        ObjectMapper objectMapper=new ObjectMapper();
+        String s = objectMapper.writeValueAsString(map);
+        Response login = given().accept(ContentType.JSON).contentType(ContentType.JSON)
+                .body(s).when().post("login");
+        String token = login.jsonPath().getString("token");
+        System.out.println(token);
     }
 }
