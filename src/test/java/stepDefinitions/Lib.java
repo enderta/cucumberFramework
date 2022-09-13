@@ -72,5 +72,65 @@ public class Lib {
 
 
     }
+    String bookName;
+    String catagory;
+    @Given("the user as a librarian makes post request with using add_book end point with random values")
+    public void the_user_as_a_librarian_makes_post_request_with_using_add_book_end_point_with_random_values() throws JsonProcessingException {
+        baseURI= "https://library2.cydeo.com/rest/v1/";
+        Map<String,Object> map=new HashMap<>();
+        map.put("email","librarian24@library");
+        map.put("password","8v8ZByKA");
+        ObjectMapper objectMapper=new ObjectMapper();
+        String s = objectMapper.writeValueAsString(map);
+        Response login = given().accept(ContentType.JSON).contentType(ContentType.JSON)
+                .body(s).when().post("login");
+        String token = login.jsonPath().getString("token");
+        Map<String,Object> map1=new HashMap<>();
+        map1.put("name","CodingBook2");
+        map1.put("isbn","123456");
+        map1.put("year","2020");
+        map1.put("author","James");
+        map1.put("book_category_id","1");
+        map1.put("description","Java is a programming language");
+        bookName = map1.get("name").toString();
+        ObjectMapper objectMapper1=new ObjectMapper();
+        String s1 = objectMapper1.writeValueAsString(map1);
+        Response response = given().accept(ContentType.JSON).contentType(ContentType.JSON)
+                .header("x-library-token", token).body(s1).when().post("add_book");
+        response.prettyPrint();
+        assertEquals(200,response.statusCode());
+        BrowserUtils.waitFor(4);
+    }
+    @When("the user navigates to {string} page")
+    public void the_user_navigates_to_page(String page) {
+        List<WebElement> elements = Driver.get().findElements(By.xpath("//span"));
+        elements.stream().filter(a->a.getText().equals(page)).findFirst().get().click();
+
+    }
+    @When("the user search corresponding book name")
+    public void the_user_search_corresponding_book_name() {
+        Driver.get().findElement(By.xpath("//input")).sendKeys(bookName);
+        BrowserUtils.waitFor(2);
+
+
+    }
+    @Then("the user should see the book created in the API on the list")
+    public void the_user_should_see_the_book_created_in_the_api_on_the_list() {
+
+    }
+    @Then("the user click edit button")
+    public void the_user_click_edit_button() {
+        Driver.get().findElement(By.xpath("(//a[.=' Edit Book'])[1]")).click();
+        BrowserUtils.waitFor(2);
+    }
+    @Then("click save button see the msg {string}")
+    public void click_save_button_see_the_msg(String msg) {
+        Driver.get().findElement(By.xpath("//button[.='Save changes']")).click();
+        BrowserUtils.waitFor(2);
+        String actualMsg = Driver.get().findElement(By.xpath("//div[.='The book has been updated.']")).getText();
+        assertEquals(msg,actualMsg);
+
+    }
+
 
 }

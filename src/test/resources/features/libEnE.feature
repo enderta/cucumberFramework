@@ -8,13 +8,13 @@ Feature: End to end login test
   Scenario: Login as a librarian to UI
     Given the user is on the Library app login page
     When the user logs in as librarian
-  @lib
+
   Scenario: Checking dashboard datas
     Given the user is on the Library app login page
     When the user logs in as librarian
     When the user logs in as librarian to API
     Then the informations getting from API and UI should be matched
-
+  @lib
   Scenario: Add book as a librarian on api
     Given the user as a librarian makes post request with using add_book end point with random values
     Given the user is on the Library app login page
