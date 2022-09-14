@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Lib {
 
@@ -131,6 +132,51 @@ public class Lib {
         assertEquals(msg,actualMsg);
 
     }
+    String apiName;
+    @Given("create new user with {int}")
+    public void create_new_user_with(Integer type) throws JsonProcessingException {
+        baseURI= "https://library2.cydeo.com/rest/v1/";
+        Map<String,Object> map=new HashMap<>();
+        map.put("email","librarian24@library");
+        map.put("password","8v8ZByKA");
+        ObjectMapper objectMapper=new ObjectMapper();
+        String s = objectMapper.writeValueAsString(map);
+        Response login = given().accept(ContentType.JSON).contentType(ContentType.JSON)
+                .body(s).when().post("login");
+        String token = login.jsonPath().getString("token");
+        Map<String,Object> map1=new HashMap<>();
+        map1.put("full_name","James Bond");
+        map1.put("password","123456");
+        map1.put("email","bond@library");
+        map1.put("user_group_id",type);
+        map1.put("status", "active");
+        map1.put("start_date", "2022-09-14");
+        map1.put("end_date", "2023-05-05");
+        map1.put("address", "MI5");
+        apiName = map1.get("full_name").toString();
+        ObjectMapper objectMapper1=new ObjectMapper();
+        String s1 = objectMapper1.writeValueAsString(map1);
+        Response response = given().accept(ContentType.JSON).contentType(ContentType.JSON)
+                .header("x-library-token", token).body(s1).when().post("add_user");
+
+    }
+    @Then("user should be able to get {string} in response body for add user")
+    public void user_should_be_able_to_get_in_response_body_for_add_user(String string) {
+        Response response = given().accept(ContentType.JSON).contentType(ContentType.JSON)
+                .when().get("get_user_groups");
+        List<String> names = response.jsonPath().getList("name");
+        assertTrue(names.contains(apiName));
+    }
+    @Then("the user should see the user created in the API on the list")
+    public void the_user_should_see_the_user_created_in_the_api_on_the_list() {
+
+    }
+
+    @When("the user search corresponding user name")
+    public void the_user_search_corresponding_user_name() {
+
+    }
+
 
 
 }
