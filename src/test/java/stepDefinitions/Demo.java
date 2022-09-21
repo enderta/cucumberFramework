@@ -55,5 +55,7 @@ public class Demo {
                 .body(s).when().post("login");
         String token = login.jsonPath().getString("token");
         System.out.println(token);
+        given().accept(ContentType.JSON).contentType(ContentType.JSON)
+                .header("x-library-token",token).when().get("user/5739").prettyPrint();
     }
 }

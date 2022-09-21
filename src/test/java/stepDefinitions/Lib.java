@@ -166,6 +166,8 @@ public class Lib {
                 .when().get("get_user_groups");
         List<String> names = response.jsonPath().getList("name");
         assertTrue(names.contains(apiName));
+
+
     }
     @Then("the user should see the user created in the API on the list")
     public void the_user_should_see_the_user_created_in_the_api_on_the_list() {

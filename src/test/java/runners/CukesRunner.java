@@ -17,7 +17,7 @@ import org.junit.runner.RunWith;
         glue = "stepDefinitions",
         dryRun = false,
 
-        tags = "@lib"
+        tags = "@book"
 
 
 )
