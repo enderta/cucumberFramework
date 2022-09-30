@@ -14,6 +14,8 @@ import org.openqa.selenium.By;
 import pages.BookItPages;
 import utilities.*;
 
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -177,6 +179,40 @@ public class Lib {
     @When("the user search corresponding user name")
     public void the_user_search_corresponding_user_name() {
 
+    }
+    Connection connection;
+    Statement statement;
+    ResultSet resultSet;
+    ResultSetMetaData metaData;
+    @Given("Establish the database connection")
+    public void establish_the_database_connection() throws SQLException {
+         connection= DriverManager.getConnection("jdbc:mysql://34.230.35.214:3306/library2","library2_client","6s2LQQTjBcGFfDhY");
+        statement= connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+
+    }
+    List<Map<String,Object>> ls;
+    @When("Execute query to get all columns")
+    public void execute_query_to_get_all_columns() throws SQLException {
+        resultSet= statement.executeQuery("select * from users");
+        metaData = resultSet.getMetaData();
+       ls=new ArrayList<>();
+        while(resultSet.next()){
+            Map<String,Object> map=new HashMap<>();
+            for(int i=1;i<=metaData.getColumnCount();i++){
+                map.put(metaData.getColumnName(i),resultSet.getObject(i));
+            }
+            ls.add(map);
+        }
+
+    }
+    @Then("verify the below columns are listed in result")
+    public void verify_the_below_columns_are_listed_in_result(List<String> table) {
+
+        for (Map<String, Object> map : ls) {
+            for (String s : table) {
+                assertTrue(map.containsKey(s));
+            }
+        }
     }
 
 
