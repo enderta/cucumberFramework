@@ -215,6 +215,29 @@ public class Lib {
         }
     }
 
+    @Given("user on the login page of the library")
+    public void user_on_the_login_page_of_the_library() {
+       Driver.get().get("https://library2.cydeo.com/login.html");
+    }
+    @When("user enters {string} and {string}")
+    public void user_enters_and(String user, String pass) {
+       Driver.get().findElement(By.id("inputEmail")).sendKeys(user);
+         Driver.get().findElement(By.id("inputPassword")).sendKeys(pass);
+
+    }
+    @When("user click {string} button")
+    public void user_click_button(String btn) {
+        Driver.get().findElement(By.tagName("button")).click();
+    }
+    @Then("Verify user see the {string} page")
+    public void verify_user_see_the_page(String title) {
+        BrowserUtils.waitFor(2);
+        String actualTitle = Driver.get().getTitle();
+        assertEquals(title,actualTitle);
+    }
+
+
+
 
 
 }
