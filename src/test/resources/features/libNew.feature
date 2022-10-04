@@ -19,7 +19,7 @@ Feature: As a data consumer, I want the user information are
       | end_date      |
       | address       |
 
-    @dblib
+
   Scenario Outline: Login with valid credentials as Student and Librarian
     Given user on the login page of the library
     When user enters "<username>" and "<password>"
@@ -29,3 +29,11 @@ Feature: As a data consumer, I want the user information are
       | username            | password |
       | student6@library    | NXhpXJdC |
       | student58@library   | WS3rm9xG |
+
+
+
+  @dblib
+  Scenario: verify the amount of borrowed books
+    Given user log in as a librarian
+    When user take borrowed books number
+    Then borrowed books number information must match with DB

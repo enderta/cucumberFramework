@@ -235,6 +235,44 @@ public class Lib {
         String actualTitle = Driver.get().getTitle();
         assertEquals(title,actualTitle);
     }
+    @Given("user log in as a librarian")
+    public void user_log_in_as_a_librarian() {
+      Driver.get().get("https://library2.cydeo.com/login.html");
+        Driver.get().findElement(By.id("inputEmail")).sendKeys("librarian1@library");
+        Driver.get().findElement(By.id("inputPassword")).sendKeys("qU9mrvur");
+        Driver.get().findElement(By.tagName("button")).click();
+        BrowserUtils.waitFor(10);
+    }
+    int borrowedUI=0;
+    @When("user take borrowed books number")
+    public void user_take_borrowed_books_number() {
+
+        WebElement element = Driver.get().findElement(By.xpath("(//h2)[3]"));
+        borrowedUI = Integer.parseInt(element.getText());
+        System.out.println("borrowedUI = " + borrowedUI);
+
+
+
+    }
+    @Then("borrowed books number information must match with DB")
+    public void borrowed_books_number_information_must_match_with_db() throws SQLException {
+        connection= DriverManager.getConnection("jdbc:mysql://34.230.35.214:3306/library2","library2_client","6s2LQQTjBcGFfDhY");
+        statement= connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+        resultSet= statement.executeQuery("select * from book_borrow where  returned_date is null");
+
+        ResultSetMetaData metaData1 = resultSet.getMetaData();
+        List<Map<String,Object>> ls=new ArrayList<>();
+        while(resultSet.next()){
+            Map<String,Object> map=new HashMap<>();
+            for(int i=1;i<=metaData1.getColumnCount();i++){
+                map.put(metaData1.getColumnName(i),resultSet.getObject(i));
+            }
+            ls.add(map);
+        }
+        System.out.println(ls.size());
+        int size = ls.size();
+        Assert.assertEquals(size,borrowedUI);
+    }
 
 
 
