@@ -277,7 +277,7 @@ public class Lib {
     }
     @When("user goes to {string} page")
     public void user_goes_to_page(String page) {
-        Driver.get().findElement(By.xpath("//span[.='"+page+"']")).click();
+      Driver.get().findElement(By.xpath("//span[.='"+page+"']")).click();
 
     }
     @When("user selects {string} records from dropdown")
@@ -295,32 +295,31 @@ public class Lib {
 
         List<WebElement> elements = Driver.get().findElements(By.xpath("//tbody//td[5]"));
 
-        Map<String,Integer> map=new HashMap<>();
-        for (WebElement element : elements) {
-            String genre = element.getText();
-            if(map.containsKey(genre)){
-                map.put(genre,map.get(genre)+1);
-            }else{
-                map.put(genre,1);
-            }
-        }
-        int max=0;
-        for (String s : map.keySet()) {
-            if(map.get(s)>max){
-                max=map.get(s);
-                genreUI=s;
-            }
-        }
+        elements.stream().map(WebElement::getText).collect(Collectors.toList()).stream().collect(Collectors.groupingBy(Function.identity(),Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).ifPresent(e->genreUI=e.getKey());
         System.out.println("genreUI = " + genreUI);
     }
-
+String genreDB;
     @When("execute a query to find the most popular book genre from DB")
-    public void execute_a_query_to_find_the_most_popular_book_genre_from_db() {
+    public void execute_a_query_to_find_the_most_popular_book_genre_from_db() throws SQLException {
+        connection= DriverManager.getConnection("jdbc:mysql://34.230.35.214:3306/library2","library2_client","6s2LQQTjBcGFfDhY");
+        statement= connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+        resultSet= statement.executeQuery("select name from book_categories where id =(select (count(*)) from books b join\n" +
+                "    book_borrow bb on b.id = bb.book_id where bb.is_returned = 0 group by b.book_category_id order by b.book_category_id desc limit 1);\n");
+        ResultSetMetaData metaData1 = resultSet.getMetaData();
+        List<Map<String,Object>> ls=new ArrayList<>();
+        while(resultSet.next()){
+            Map<String,Object> map=new HashMap<>();
+            for(int i=1;i<=metaData1.getColumnCount();i++){
+                map.put(metaData1.getColumnName(i),resultSet.getObject(i));
+            }
+            ls.add(map);
+        }
+        genreDB=ls.get(0).get("name").toString();
 
     }
     @Then("verify that most popular genre from UI is matching to DB")
     public void verify_that_most_popular_genre_from_ui_is_matching_to_db() {
-
+        Assert.assertEquals(genreDB,genreUI);
     }
 
 
