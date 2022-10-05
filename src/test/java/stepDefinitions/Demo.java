@@ -45,17 +45,18 @@ import static io.restassured.RestAssured.given;
 public class Demo {
     @Test
     public void test1() throws SQLException, JsonProcessingException {
-        baseURI= "https://library2.cydeo.com/rest/v1/";
+        baseURI="https://library2.cydeo.com/rest/v1";
         Map<String,Object> map=new HashMap<>();
         map.put("email","librarian24@library");
         map.put("password","8v8ZByKA");
         ObjectMapper objectMapper=new ObjectMapper();
-        String s = objectMapper.writeValueAsString(map);
-        Response login = given().accept(ContentType.JSON).contentType(ContentType.JSON)
-                .body(s).when().post("login");
-        String token = login.jsonPath().getString("token");
-        System.out.println(token);
-        given().accept(ContentType.JSON).contentType(ContentType.JSON)
-                .header("x-library-token",token).when().get("user/5739").prettyPrint();
+        String json = objectMapper.writeValueAsString(map);
+        Response response = given().contentType(ContentType.JSON).body(json).when().post("/login");
+        String token = response.jsonPath().getString("token");
+        System.out.println("token = " + token);
+        Response response1 = given().header("x-library-token", token).when().get("/dashboard_stats");
+        JsonPath jsonPath = response1.jsonPath();
+        String book_count = jsonPath.getString("book_count");
+        System.out.println("book_count = " + book_count);
     }
 }

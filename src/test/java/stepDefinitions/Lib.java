@@ -3,6 +3,7 @@ package stepDefinitions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.*;
+import io.restassured.path.json.JsonPath;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -318,7 +319,23 @@ String genreDB;
 
     }
     @Then("verify that most popular genre from UI is matching to DB")
-    public void verify_that_most_popular_genre_from_ui_is_matching_to_db() {
+    public void verify_that_most_popular_genre_from_ui_is_matching_to_db() throws JsonProcessingException {
+        baseURI="https://library2.cydeo.com/rest/v1";
+        Map<String,Object> map=new HashMap<>();
+        map.put("email","librarian24@library");
+        map.put("password","8v8ZByKA");
+        ObjectMapper objectMapper=new ObjectMapper();
+        String json = objectMapper.writeValueAsString(map);
+        Response response = given().contentType(ContentType.JSON).body(json).when().post("/login");
+        String token = response.jsonPath().getString("token");
+        System.out.println("token = " + token);
+        Response response1 = given().header("x-library-token", token).when().get("/dashboard_stats");
+        JsonPath jsonPath = response1.jsonPath();
+        String book_count = jsonPath.getString("book_count");
+        System.out.println("book_count = " + book_count);
+
+
+
         Assert.assertEquals(genreDB,genreUI);
     }
 
