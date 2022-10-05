@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import utilities.Driver;
 import io.cucumber.java.en.*;
 import io.restassured.http.ContentType;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.baseURI;
@@ -272,6 +274,53 @@ public class Lib {
         System.out.println(ls.size());
         int size = ls.size();
         Assert.assertEquals(size,borrowedUI);
+    }
+    @When("user goes to {string} page")
+    public void user_goes_to_page(String page) {
+        Driver.get().findElement(By.xpath("//span[.='"+page+"']")).click();
+
+    }
+    @When("user selects {string} records from dropdown")
+    public void user_selects_records_from_dropdown(String dd) {
+        WebElement element = Driver.get().findElement(By.xpath("(//select)[2]"));
+        Select ss=new Select(element);
+        ss.selectByVisibleText(dd);
+        BrowserUtils.waitFor(8);
+
+
+    }
+    String genreUI;
+    @When("user gets most popular book genre")
+    public void user_gets_most_popular_book_genre() {
+
+        List<WebElement> elements = Driver.get().findElements(By.xpath("//tbody//td[5]"));
+
+        Map<String,Integer> map=new HashMap<>();
+        for (WebElement element : elements) {
+            String genre = element.getText();
+            if(map.containsKey(genre)){
+                map.put(genre,map.get(genre)+1);
+            }else{
+                map.put(genre,1);
+            }
+        }
+        int max=0;
+        for (String s : map.keySet()) {
+            if(map.get(s)>max){
+                max=map.get(s);
+                genreUI=s;
+            }
+        }
+        System.out.println("genreUI = " + genreUI);
+    }
+
+    @When("execute a query to find the most popular book genre from DB")
+    public void execute_a_query_to_find_the_most_popular_book_genre_from_db() {
+
+    }
+    @Then("verify that most popular genre from UI is matching to DB")
+    public void verify_that_most_popular_genre_from_ui_is_matching_to_db() {
+
     }
 
 

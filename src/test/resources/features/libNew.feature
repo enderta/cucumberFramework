@@ -32,8 +32,18 @@ Feature: As a data consumer, I want the user information are
 
 
 
-  @dblib
+
   Scenario: verify the amount of borrowed books
     Given user log in as a librarian
     When user take borrowed books number
     Then borrowed books number information must match with DB
+
+
+  @dblib
+  Scenario: verify the common book genre that’s being borrowed
+    Given user log in as a librarian
+    When user goes to "Books" page
+    And user selects "500" records from dropdown
+    And user gets most popular book genre
+    And execute a query to find the most popular book genre from DB
+    Then verify that most popular genre from UI is matching to DB
