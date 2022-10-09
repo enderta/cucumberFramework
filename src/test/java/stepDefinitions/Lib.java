@@ -339,26 +339,10 @@ String userUI;
     @When("user gets most popular user who reads the most")
     public void user_gets_most_popular_user_who_reads_the_most() {
         List<WebElement> elements = Driver.get().findElements(By.xpath("//tbody//td[7]"));
-        Map<String,Object> map=new HashMap<>();
-        for (WebElement element : elements) {
-            if (map.containsKey(element.getText())) {
-                map.put(element.getText(), (int) map.get(element.getText()) + 1);
-            } else {
-                map.put(element.getText(), 1);
-            }
+        elements.stream().map(WebElement::getText).collect(Collectors.toList()).stream().collect(Collectors.groupingBy(Function.identity(),Collectors.counting())).entrySet().stream().max(Map.Entry.comparingByValue()).ifPresent(e->userUI=e.getKey());
+        if(userUI.equals("")){
+            userUI="Test Student 1";
         }
-        System.out.println(map);
-        int max=0;
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            if((int)entry.getValue()>max){
-                max=(int)entry.getValue();
-                userUI=entry.getKey();
-            }
-        }
-
-       if(Objects.equals(userUI, "")){
-          userUI="Test Student 1";
-       }
     }
 String userDB;
     @When("execute a query to find the most popular user from DB")
