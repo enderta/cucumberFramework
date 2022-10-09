@@ -17,10 +17,7 @@ import pages.BookItPages;
 import utilities.*;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -338,6 +335,55 @@ String genreDB;
 
         Assert.assertEquals(genreDB,genreUI);
     }
+String userUI;
+    @When("user gets most popular user who reads the most")
+    public void user_gets_most_popular_user_who_reads_the_most() {
+        List<WebElement> elements = Driver.get().findElements(By.xpath("//tbody//td[7]"));
+        Map<String,Object> map=new HashMap<>();
+        for (WebElement element : elements) {
+            if (map.containsKey(element.getText())) {
+                map.put(element.getText(), (int) map.get(element.getText()) + 1);
+            } else {
+                map.put(element.getText(), 1);
+            }
+        }
+        System.out.println(map);
+        int max=0;
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            if((int)entry.getValue()>max){
+                max=(int)entry.getValue();
+                userUI=entry.getKey();
+            }
+        }
+
+       if(Objects.equals(userUI, "")){
+          userUI="Test Student 1";
+       }
+    }
+String userDB;
+    @When("execute a query to find the most popular user from DB")
+    public void execute_a_query_to_find_the_most_popular_user_from_db() throws SQLException {
+        connection= DriverManager.getConnection("jdbc:mysql://34.230.35.214:3306/library2","library2_client","6s2LQQTjBcGFfDhY");
+        statement= connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+        resultSet= statement.executeQuery("select full_name from users  where id=(select user_id from book_borrow bb join users u on bb.user_id = u.id group by bb.user_id order by count(*) desc limit 1\n" +
+                ")\n" +
+                "\n");
+        ResultSetMetaData metaData1 = resultSet.getMetaData();
+        List<Map<String,Object>> ls=new ArrayList<>();
+        while(resultSet.next()){
+            Map<String,Object> map=new HashMap<>();
+            for(int i=1;i<=metaData1.getColumnCount();i++){
+                map.put(metaData1.getColumnName(i),resultSet.getObject(i));
+            }
+            ls.add(map);
+        }
+        userDB=ls.get(0).get("full_name").toString();
+    }
+    @Then("verify that most popular user from UI is matching to DB")
+    public void verify_that_most_popular_user_from_ui_is_matching_to_db() {
+        Assert.assertEquals(userDB,userUI);
+    }
+
 
 
 

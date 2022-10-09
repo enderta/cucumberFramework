@@ -39,7 +39,7 @@ Feature: As a data consumer, I want the user information are
     Then borrowed books number information must match with DB
 
 
-  @dblib
+
   Scenario: verify the common book genre that’s being borrowed
     Given user log in as a librarian
     When user goes to "Books" page
@@ -47,3 +47,12 @@ Feature: As a data consumer, I want the user information are
     And user gets most popular book genre
     And execute a query to find the most popular book genre from DB
     Then verify that most popular genre from UI is matching to DB
+
+  @dblib
+  Scenario: verify book user that’s being borrowed
+    Given user log in as a librarian
+    When user goes to "Books" page
+    And user selects "500" records from dropdown
+    And user gets most popular user who reads the most
+    And execute a query to find the most popular user from DB
+    Then verify that most popular user from UI is matching to DB
