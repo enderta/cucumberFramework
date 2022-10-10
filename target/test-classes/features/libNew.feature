@@ -48,7 +48,7 @@ Feature: As a data consumer, I want the user information are
     And execute a query to find the most popular book genre from DB
     Then verify that most popular genre from UI is matching to DB
 
-  @dblib
+
   Scenario: verify book user that’s being borrowed
     Given user log in as a librarian
     When user goes to "Books" page
@@ -56,3 +56,10 @@ Feature: As a data consumer, I want the user information are
     And user gets most popular user who reads the most
     And execute a query to find the most popular user from DB
     Then verify that most popular user from UI is matching to DB
+
+  @dblib
+  Scenario: Verify book information with DB
+    Given user log in as a librarian
+    And user goes to "Books" page
+    When user searches for "Kod Da Vinchi" book
+    Then book information must match with the Database

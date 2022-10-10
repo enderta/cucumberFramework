@@ -367,6 +367,49 @@ String userDB;
     public void verify_that_most_popular_user_from_ui_is_matching_to_db() {
         Assert.assertEquals(userDB,userUI);
     }
+    String nameUI;
+    String isbnUI;
+    String authorUI;
+    String yearUI;
+    String search;
+    @When("user searches for {string} book")
+    public void user_searches_for_book(String book) {
+        this.search=book;
+        Driver.get().findElement(By.xpath("//input")).sendKeys(book);
+        BrowserUtils.waitFor(5);
+        nameUI= Driver.get().findElement(By.xpath("//tbody//tr//td[3]")).getText();
+        isbnUI= Driver.get().findElement(By.xpath("//tbody//tr//td[2]")).getText();
+        authorUI= Driver.get().findElement(By.xpath("//tbody//tr//td[4]")).getText();
+        yearUI= Driver.get().findElement(By.xpath("//tbody//tr//td[6]")).getText();
+
+    }
+    @Then("book information must match with the Database")
+    public void book_information_must_match_with_the_database() throws SQLException {
+        System.out.println(search);
+        connection= DriverManager.getConnection("jdbc:mysql://34.230.35.214:3306/library2","library2_client","6s2LQQTjBcGFfDhY");
+        statement= connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+        resultSet=statement.executeQuery("select * from books where name='"+search+"'");
+        metaData=resultSet.getMetaData();
+        List<Map<String,Object>> ls=new ArrayList<>();
+        while (resultSet.next()){
+            Map<String, Object> map=new HashMap<>();
+            for (int i = 1; i <metaData.getColumnCount() ; i++) {
+                map.put(metaData.getColumnName(i),resultSet.getObject(i));
+            }
+            ls.add(map);
+
+        }
+        System.out.println(ls);
+        String nameDb=ls.get(0).get("name").toString();
+        String isbnDb=ls.get(0).get("isbn").toString();
+        String authordb=ls.get(0).get("author").toString();
+        String yearDb=ls.get(0).get("year").toString();
+        Assert.assertEquals(nameDb,nameUI);
+        Assert.assertEquals(isbnDb,isbnUI);
+        Assert.assertEquals(authordb,authorUI);
+        Assert.assertEquals(yearDb,yearUI);
+
+    }
 
 
 
