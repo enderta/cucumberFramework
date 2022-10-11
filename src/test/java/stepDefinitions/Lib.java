@@ -410,6 +410,39 @@ String userDB;
         Assert.assertEquals(yearDb,yearUI);
 
     }
+    List<String> catagUI;
+    @When("take all book categories in UI")
+    public void take_all_book_categories_in_ui() {
+        WebElement book_categories = Driver.get().findElement(By.id("book_categories"));
+        Select select=new Select(book_categories);
+        List<WebElement> options = select.getOptions();
+      catagUI = options.stream().map(WebElement::getText).collect(Collectors.toList());
+
+    }
+    List<String> catagDB;
+    @When("execute a query to get book categories")
+    public void execute_a_query_to_get_book_categories() throws SQLException {
+        System.out.println(search);
+        connection= DriverManager.getConnection("jdbc:mysql://34.230.35.214:3306/library2","library2_client","6s2LQQTjBcGFfDhY");
+        statement= connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+        resultSet=statement.executeQuery("select * from book_categories");
+        metaData=resultSet.getMetaData();
+        List<Map<String,Object>> ls=new ArrayList<>();
+        while (resultSet.next()){
+            Map<String, Object> map=new HashMap<>();
+            for (int i = 1; i <metaData.getColumnCount() ; i++) {
+                map.put(metaData.getColumnName(i),resultSet.getObject(i));
+            }
+            ls.add(map);
+
+        }
+        catagDB=ls.stream().map(m->m.get("name").toString()).collect(Collectors.toList());
+    }
+    @Then("verify book categories must match the book_categories table from DB")
+    public void verify_book_categories_must_match_the_book_categories_table_from_db() {
+        Assert.assertEquals(catagDB,catagUI);
+    }
+
 
 
 
