@@ -59,4 +59,23 @@ public class Demo {
         String book_count = jsonPath.getString("book_count");
         System.out.println("book_count = " + book_count);
     }
+    @Test
+public void GMIAPI() throws JsonProcessingException {
+            baseURI="https://www.gmibank.com/api/";
+        Map<String,Object> bdy= new HashMap<>();
+        bdy.put("username","team18_admin");
+        bdy.put("password","Team18admin");
+        bdy.put("rememberme","true");
+        ObjectMapper mapper = new ObjectMapper();
+        String s = mapper.writeValueAsString(bdy);
+        Response authorization = given().contentType(ContentType.JSON)
+                .accept(ContentType.JSON).
+                body(s).
+                when().
+                post("authenticate");
+
+
+        String tkn = authorization.jsonPath().getString("id_token");
+        System.out.println("tkn = " + tkn);
+    }
 }

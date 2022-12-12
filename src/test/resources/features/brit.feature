@@ -1,3 +1,4 @@
+@brit
 Feature: Login tests
 
 
@@ -20,7 +21,7 @@ Feature: Login tests
       | SimpleTax1 | 15        |
       | SimpleTax2 | 20        |
 
-  @brit
+
   Scenario Outline: Delete a Tax
     Given Manager on Invoicing Page
     And user clicks on Configuration=>Accounting Link from left menu

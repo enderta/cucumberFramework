@@ -16,8 +16,8 @@ public class Hooks {
     @Before
     public void setUp() {
 
-        //RestAssured.baseURI= "http://library2.cybertekschool.com/rest/v1";
-        WebDriver driver=Driver.get();
+
+
         Driver.get().manage().window().maximize();
         Driver.get().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
