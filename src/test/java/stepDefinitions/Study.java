@@ -8,7 +8,8 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Test;
 import org.openqa.selenium.json.Json;
-
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
+import static java.sql.DriverManager.getConnection;
 
 public class Study {
 @Test()
@@ -38,5 +40,26 @@ public void apiTest() throws JsonProcessingException {
 	List<Map<String,Object>> list = jp1.getList("");
 	String id = list.stream().map(x -> x.get("id")).collect(Collectors.toList()).get(0).toString();
 	given().accept(ContentType.JSON).header("Authorization", "Bearer " + token).pathParam("id",id).when().get("/tp-customers/{id}").prettyPrint();
+}
+@Test
+public void DbTest() throws SQLException {
+	Connection con=null;
+	Statement st=null;
+	ResultSet rs=null;
+	ResultSetMetaData metaData=null;
+	con = DriverManager.getConnection("jdbc:postgresql://157.230.48.97:5432/gmibank_db","techprodb_user","Techpro_@126");
+	st = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+	rs = st.executeQuery("select * from tp_customer");
+	metaData = rs.getMetaData();
+	List<Map<String,Object>> list= new ArrayList<>();
+	while(rs.next()){
+		Map<String,Object> map = new HashMap<>();
+		for(int i=1;i<=metaData.getColumnCount();i++){
+			map.put(metaData.getColumnName(i),rs.getObject(i));
+		}
+		list.add(map);
+	}
+	list.stream().filter(x->x.get("id").toString().equals("40375")).forEach(System.out::println);
+
 }
 }
