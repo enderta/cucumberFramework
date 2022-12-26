@@ -75,14 +75,29 @@ public void test1() throws SQLException, JsonProcessingException {
 	int lastCarId = (int) carsList.get(carsList.size() - 1).get("id");
 	Response car = given().contentType(ContentType.JSON).header("Authorization", token).when().get("/cars/" + lastCarId);
 	car.then().statusCode(200);
-	given().contentType(ContentType.JSON).header("Authorization", token).when().delete("/cars/" + lastCarId).then().statusCode(200);
-	given().contentType(ContentType.JSON).header("Authorization", token).when().get("/cars/" + lastCarId).then().statusCode(404);
+	Map<String, Object> ownerBdy = new HashMap<>();
+	ownerBdy.put("name", "John");
+	ownerBdy.put("surname", "Doe");
+	ownerBdy.put("email", "jd@gmaail.com");
+	given().contentType(ContentType.JSON).header("Authorization", token).body(ownerBdy).when().post("/owners");
+	Response owners = given().contentType(ContentType.JSON).header("Authorization", token).when().get("/owners");
+	owners.then().statusCode(200);
+	List<Map<String, Object>> ownersList = owners.jsonPath().getList("");
+	int lastOwnerId = (int) ownersList.get(ownersList.size() - 1).get("id");
+	Response owner = given().contentType(ContentType.JSON).header("Authorization", token).when().get("/owners/" + lastOwnerId);
+	owner.then().statusCode(200);
+
+
 	Response lastUser = given().contentType(ContentType.JSON).header("Authorization", token).when().get("/users");
 	lastUser.then().statusCode(200);
 	List<Map<String, Object>> usersList = lastUser.jsonPath().getList("");
 	int lastUserId = (int) usersList.get(usersList.size() - 1).get("id");
+	given().contentType(ContentType.JSON).header("Authorization", token).when().delete("/cars/" + lastCarId).then().statusCode(200);
 	given().contentType(ContentType.JSON).header("Authorization", token).when().delete("/users/" + lastUserId).then().statusCode(200);
+	given().contentType(ContentType.JSON).header("Authorization", token).when().delete("/owners/" + lastOwnerId).then().statusCode(200);
 	given().contentType(ContentType.JSON).header("Authorization", token).when().get("/users/" + lastUserId).then().statusCode(404);
+	given().contentType(ContentType.JSON).header("Authorization", token).when().get("/cars/" + lastCarId).then().statusCode(404);
+	given().contentType(ContentType.JSON).header("Authorization", token).when().get("/owners/" + lastOwnerId).then().statusCode(404);
 
 
 }
