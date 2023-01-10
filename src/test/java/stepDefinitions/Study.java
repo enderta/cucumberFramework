@@ -63,32 +63,25 @@ public void DbTest() throws SQLException {
 
 }
 @Test
-public void testD(){
-	 //The items are integers arranged in ascending order
-	//The array can contain up to 1 million items
-	//The array is never null
-	//Implement the method boolean A.exists(int[] ints, int k) so that it returns true if k belongs to ints, otherwise, the method should return false.
-	//
-	//Important note: Try to save CPU cycles if possible.
-
-	//contain Spartan in a string  return index
-	//if not return 0
-	//if more than one return the first one
-
-	//String str="Spartan";
-	String str="Here is a string that contains the name Spartan as a part of our text resarch";
-	String str1="Spartan";
-	int index=0;
-	//as a word location
-	String s[]=str.split(" ");
-	for(int i=0;i<s.length;i++){
-		if(s[i].equals(str1)){
-			index=i+1;
-			break;
-		}
+public void testD() throws SQLException {
+	baseURI="http://localhost:3001/lists";
+	Response response = given().contentType("application/json").when().get().then().statusCode(200).extract().response();
+	JsonPath jp=response.jsonPath();
+List<Map<String,Object>> listApi = jp.getList("");
+Connection con=DriverManager.getConnection("jdbc:postgresql://localhost:5432/emp","postgres","ender");
+Statement st=con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+ResultSet rs=st.executeQuery("select * from groups");
+ResultSetMetaData metaData=rs.getMetaData();
+List<Map<String,Object>> listDB=new ArrayList<>();
+while (rs.next()){
+	Map<String,Object> map=new HashMap<>();
+	for(int i=1;i<=metaData.getColumnCount();i++){
+		map.put(metaData.getColumnName(i),rs.getObject(i));
 	}
-	System.out.println(index);
-
-
+	listDB.add(map);
 }
+assert listApi.size()==listDB.size();
+}
+
+
 }
