@@ -4,7 +4,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.Test;
 import utilities.API;
-
+import utilities.Driver;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.it.Ma;
@@ -78,4 +78,33 @@ public void GMIAPI() throws JsonProcessingException {
         String tkn = authorization.jsonPath().getString("id_token");
         System.out.println("tkn = " + tkn);
     }
+    @Test
+public void test2(){
+    Driver.get().get("http://localhost:3000/");
+        WebElement element = Driver.get().findElement(By.xpath("//button[contains(text(),'Add')]"));
+        String attribute = element.getAttribute("aria-expanded");
+        Assert.assertEquals("false",attribute);
+        element.click();
+        String attribute1 = element.getAttribute("aria-expanded");
+        Assert.assertEquals("true",attribute1);
+        Driver.get().findElement(By.xpath("//input[@name='title']")).sendKeys("yeni turku");
+        Driver.get().findElement(By.xpath("//input[@name='url']")).sendKeys("https://www.youtube.com/watch?v=JmhSBFeEGtU");
+        Driver.get().findElement(By.xpath("//button[contains(text(),'Submit')]")).click();
+        BrowserUtils.waitFor(4);
+        Driver.get().switchTo().alert().accept();
+        Driver.get().navigate().refresh();
+    BrowserUtils.waitFor(2);
+        for (WebElement webElement : Driver.get().findElements(By.xpath("//h6"))) {
+            if(webElement.getText().equals("yeni turku")){
+                Assert.assertTrue(true);
+                break;
+            }
+        }
+
+
+        Driver.get().quit();
+
+    }
+
+
 }

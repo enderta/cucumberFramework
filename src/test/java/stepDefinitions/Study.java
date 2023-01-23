@@ -1,6 +1,7 @@
 package stepDefinitions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import io.restassured.http.ContentType;
@@ -12,10 +13,7 @@ import org.junit.Test;
 import org.openqa.selenium.json.Json;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.*;
@@ -142,6 +140,58 @@ public void testD() throws SQLException, JsonProcessingException {
 	given().contentType("application/json").when().get("/all").prettyPrint();
 	given().contentType("application/json").when().delete("/"+nameApi).then().statusCode(200);
 
+}
+@Test
+public void testHack(){
+	System.out.println(run("This is p"));
+}
+public static String run(String p) {
+	String combined_queries = "";
+	int countVovel=0;
+	int countConst=0;
+
+	for (int i = 0; i < p.length(); i++) {
+		char c = Character.toLowerCase(p.charAt(i));
+		if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {
+			countVovel++;
+		} else if (c >= 'a' && c <= 'z') {
+			countConst++;
+		}
+	}
+
+	String reverse = new StringBuilder(p).reverse().toString();
+	String reverseCase = "";
+
+	for (int i = 0; i < reverse.length(); i++) {
+		char c = reverse.charAt(i);
+		if (Character.isUpperCase(c)) {
+			reverseCase += Character.toLowerCase(c);
+		} else if (Character.isLowerCase(c)) {
+			reverseCase += Character.toUpperCase(c);
+		} else {
+			reverseCase += c;
+		}
+	}
+
+	var split = p.split(" ");
+	String dash = "";
+	for (int i = 0; i < split.length; i++) {
+		dash += split[i] + "-";
+	}
+	dash = dash.substring(0, dash.length() - 1);
+
+	String pv = "";
+	for (int i = 0; i < p.length(); i++) {
+		char c = Character.toLowerCase(p.charAt(i));
+		if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {
+			pv += "pv" + c;
+		} else {
+			pv += p.charAt(i);
+		}
+	}
+
+	combined_queries = countVovel+ " " + countConst  + "::" + reverseCase + "::" + dash + "::" + pv;
+	return combined_queries;
 }
 
 
