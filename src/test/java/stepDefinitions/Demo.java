@@ -78,7 +78,7 @@ public void GMIAPI() throws JsonProcessingException {
         System.out.println("tkn = " + tkn);
     }
     @Test
-public void test2(){
+public void test2() throws InterruptedException {
 
 
     Driver.get().get("http://localhost:3000/");
@@ -101,6 +101,14 @@ public void test2(){
                 break;
             }
         }
+        Thread.sleep(5000);
+        baseURI="http://localhost:3001/";
+        Response response = given().accept(ContentType.JSON).when().get("/videos").then().extract().response();
+        List<Map<String,Object>> list = response.jsonPath().getList("");
+        list.stream().filter(map->map.get("title").equals("yeni turku")).forEach(map->{
+            Assert.assertEquals("https://www.youtube.com/watch?v=JmhSBFeEGtU",map.get("url"));
+        });
+
         WebElement element1 = Driver.get().findElement(By.xpath("(//button)[30]"));
         JavascriptExecutor js = (JavascriptExecutor) Driver.get();
         js.executeScript("arguments[0].click();",element1);
