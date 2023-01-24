@@ -3,6 +3,8 @@ package stepDefinitions;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.Test;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import utilities.API;
 import utilities.Driver;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,9 +20,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
@@ -87,19 +86,24 @@ public void test2(){
         element.click();
         String attribute1 = element.getAttribute("aria-expanded");
         Assert.assertEquals("true",attribute1);
-        Driver.get().findElement(By.xpath("//input[@name='title']")).sendKeys("yeni turku");
+       /* Driver.get().findElement(By.xpath("//input[@name='title']")).sendKeys("yeni turku");
         Driver.get().findElement(By.xpath("//input[@name='url']")).sendKeys("https://www.youtube.com/watch?v=JmhSBFeEGtU");
         Driver.get().findElement(By.xpath("//button[contains(text(),'Submit')]")).click();
         BrowserUtils.waitFor(4);
         Driver.get().switchTo().alert().accept();
         Driver.get().navigate().refresh();
-    BrowserUtils.waitFor(2);
+    BrowserUtils.waitFor(2);*/
+/*
         for (WebElement webElement : Driver.get().findElements(By.xpath("//h6"))) {
             if(webElement.getText().equals("yeni turku")){
                 Assert.assertTrue(true);
                 break;
             }
         }
+*/
+        WebElement element1 = Driver.get().findElement(By.xpath("(//button)[30]"));
+        JavascriptExecutor js = (JavascriptExecutor) Driver.get();
+        js.executeScript("arguments[0].click();",element1);
 
 
         Driver.get().quit();
