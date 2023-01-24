@@ -117,6 +117,26 @@ public void test2() throws InterruptedException {
         Driver.get().quit();
 
     }
+    @Test
+    public void rating(){
+        Driver.get().get("http://localhost:3000/");
+BrowserUtils.waitFor(4);
+        WebElement element1 = Driver.get().findElement(By.xpath("((//div[@class='container'])[2]//span)[2]"));
+        JavascriptExecutor js = (JavascriptExecutor) Driver.get();
+        //get text using javascript
+        String text = (String) js.executeScript("return arguments[0].textContent", element1);
+
+        int i = Integer.parseInt(text);
+        WebElement element = Driver.get().findElement(By.xpath("(//*[.='+'])[1]"));
+        element.click();
+        BrowserUtils.waitFor(4);
+        Driver.get().navigate().refresh();
+        WebElement element2 = Driver.get().findElement(By.xpath("((//div[@class='container'])[2]//span)[2]"));
+        String text1 = (String) js.executeScript("return arguments[0].textContent", element2);
+        int i1 = Integer.parseInt(text1);
+        Assert.assertEquals(i+1,i1);
+        Driver.get().quit();
+    }
 
 
 }
