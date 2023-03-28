@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mysql://34.230.35.214:3306/library2</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="rwvkarki@kandula.db.elephantsql.com" uuid="050a0a60-5bc7-4e92-9850-a392afd60109">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://kandula.db.elephantsql.com:5432/rwvkarki</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

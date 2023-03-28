@@ -142,9 +142,36 @@ public void testD() throws SQLException, JsonProcessingException {
 
 }
 @Test
-public void testHack(){
-	System.out.println(run("This is p"));
+public void testHack() throws SQLException {
+	try {
+		Class.forName("org.postgresql.Driver");
+	}
+	catch (java.lang.ClassNotFoundException e) {
+		System.out.println(e.getMessage());
+	}
+
+	String url = "jdbc:postgres://rwvkarki:acbdeD7koEpqoexQVjUKJ8mO96WIUElw@kandula.db.elephantsql.com:5432/rwvkarki";
+	String username = "rwvkarki";
+	String password = "acbdeD7koEpqoexQVjUKJ8mO96WIUElw";
+
+	try {
+		Connection db = DriverManager.getConnection(url, username, password);
+		Statement st = db.createStatement();
+		ResultSet rs = st.executeQuery("SELECT * FROM people");
+		while (rs.next()) {
+			System.out.print("Column 1 returned ");
+			System.out.println(rs.getString(2));
+			System.out.print("Column 2 returned ");
+			System.out.println(rs.getString(3));
+		}
+		rs.close();
+		st.close();
+	}
+	catch (java.sql.SQLException e) {
+		System.out.println(e.getMessage());
+	}
 }
+
 public static String run(String p) {
 	String combined_queries = "";
 	int countVovel=0;
@@ -193,6 +220,7 @@ public static String run(String p) {
 	combined_queries = countVovel+ " " + countConst  + "::" + reverseCase + "::" + dash + "::" + pv;
 	return combined_queries;
 }
+
 
 
 }

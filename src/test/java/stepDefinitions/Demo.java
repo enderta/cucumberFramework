@@ -137,6 +137,21 @@ BrowserUtils.waitFor(4);
         Assert.assertEquals(i+1,i1);
         Driver.get().quit();
     }
+    @Test
+    public void test23(){
+        int arr[]={1,2,3,4,5,6,7}; //[5,6,7,1,2,3,4]
+        int num=3;
+        int arr1[]=new int[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            if(i+num<arr.length){
+                arr1[i+num]=arr[i];
+            }else{
+                arr1[i+num-arr.length]=arr[i];
+            }
+        }
+        System.out.println(Arrays.toString(arr1));
+    }
+
 
 
 }
