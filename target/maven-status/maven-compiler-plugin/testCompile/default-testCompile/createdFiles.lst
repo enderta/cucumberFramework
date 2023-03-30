@@ -4,6 +4,8 @@ runners/CukesRunner.class
 utilities/BookitAPI.class
 utilities/BrowserUtils$1.class
 stepDefinitions/Lib.class
+stepDefinitions/BooktItEnd.class
+Main.class
 stepDefinitions/ZeroBank.class
 pages/BritPAge.class
 stepDefinitions/GMIBank2.class
@@ -15,10 +17,14 @@ stepDefinitions/BritStepDef.class
 utilities/SpartanApiDB.class
 utilities/DBUtils.class
 pages/SpartanPages.class
+stepDefinitions/CarsOwnerApiDb.class
 utilities/Driver.class
 stepDefinitions/Medduna3.class
+stepDefinitions/Demo.class
 stepDefinitions/Hooks.class
-stepDefinitions/BookIt.class
+stepDefinitions/TravelSteps.class
 utilities/ConfigurationReader.class
 stepDefinitions/SpartanStepDef.class
+stepDefinitions/Study.class
 utilities/API.class
+stepDefinitions/TryCloud.class
