@@ -104,17 +104,18 @@ public void i_enter_a_valid_location_and_dates() {
 	// find the date element for 15th of May and click it
 	WebElement checkinDate = driver.findElement(By.xpath("//td[text()='15']"));
 	checkinDate.click();
-	/*BrowserUtils.waitFor(3);
+	BrowserUtils.waitFor(3);
+	driver.findElement(By.xpath("(//*[@class='label-text'])[1]")).click();
+	BrowserUtils.waitFor(3);
 	// find the check-out date field and click it to open the date picker
 	WebElement checkoutField = driver.findElement(By.id("checkout"));
-	checkoutField.click();*/
+	checkoutField.click();
 
 	// find the month and year switcher and click it until we reach May 2023
-	/*WebElement monthYearSwitcher2 = driver.findElement(By.xpath("(//th[@class='switch'])[4]"));
+	WebElement monthYearSwitcher2 = driver.findElement(By.xpath("(//th[@class='switch'])[4]"));
 	while (!monthYearSwitcher2.getText().equals("May 2023")) {
 		driver.findElement(By.cssSelector("th.next")).click();
 	}
-*/
 
 	// find the date element for 17th of May and click it
 	WebElement checkoutDate = driver.findElement(By.xpath("(//td[text()='17'])[2]"));
