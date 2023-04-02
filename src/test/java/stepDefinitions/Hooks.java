@@ -31,7 +31,8 @@ public class Hooks {
             scenario.attach(screenShot, "image/png", "screenshot");
         }
 
-        Driver.get().quit();
+        Driver.get().manage().deleteAllCookies();
+        Driver.closeDriver();
 
 
     }
