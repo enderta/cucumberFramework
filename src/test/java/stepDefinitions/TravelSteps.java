@@ -77,13 +77,13 @@ public void i_enter_a_valid_location_and_dates() {
 	WebElement searchBox = driver.findElement(By.className("select2-search__field"));
 
 // Type the text that you want to search for in the search box
-	searchBox.sendKeys("Coventry");
+	searchBox.sendKeys("Islamabad");
 
 // Wait for the search results to appear
-	wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[contains(text(), 'Coventry,United Kingdom')]")));
+	wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[contains(text(), 'Islamabad')]")));
 
 // Locate the desired search result
-	WebElement searchResult = driver.findElement(By.xpath("//li[contains(text(), 'Coventry,United Kingdom')]"));
+	WebElement searchResult = driver.findElement(By.xpath("//li[contains(text(), 'Islamabad')]"));
 
 // Click on the desired search result to select it
 	searchResult.click();
