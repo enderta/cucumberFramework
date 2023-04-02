@@ -121,6 +121,23 @@ public void i_enter_a_valid_location_and_dates() {
 	WebElement checkoutDate = driver.findElement(By.xpath("(//td[text()='17'])[2]"));
 	checkoutDate.click();
 
+	// select the number of adults
+	driver.findElement(By.xpath("//a[@class='dropdown-toggle dropdown-btn travellers waves-effect']")).click();
+	BrowserUtils.waitFor(2);
+	driver.findElement(By.id("rooms")).clear();
+	driver.findElement(By.id("rooms")).sendKeys("2");
+	BrowserUtils.waitFor(2);
+	driver.findElement(By.id("adults")).clear();
+	driver.findElement(By.id("adults")).sendKeys("2");
+	BrowserUtils.waitFor(2);
+	driver.findElement(By.id("childs")).clear();
+	driver.findElement(By.id("childs")).sendKeys("2");
+	BrowserUtils.waitFor(2);
+	WebElement nationality = driver.findElement(By.id("nationality"));
+	Select select=new Select(nationality);
+	select.selectByValue("TR");
+	BrowserUtils.waitFor(2);
+
 
 }
 @When("I click the search button")
