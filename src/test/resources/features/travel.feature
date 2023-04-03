@@ -1,8 +1,7 @@
-
 Feature: User Registration and Login
 
-    Background:
-        Given I am on the home page
+  Background:
+    Given I am on the home page
 
   Scenario: Register a new user
     Given I am on the registration page
@@ -28,11 +27,11 @@ Feature: User Registration and Login
   @travel
   Scenario Outline: Successful login
     Given I am on the login page
-    When I enter "<username>" and "<password>"
+    When I enter "<username>" and "<password>" in the "<row>" row
     And I click on the login button
     Then I should be redirected to the home page
 
     Examples:
-      | username | password |
-      | user1    | pass1    |
-      | user2    | pass2    |
+      | username | password | row |
+      | 1        | 2        | 1   |
+      | 3        | 4        | 2   |

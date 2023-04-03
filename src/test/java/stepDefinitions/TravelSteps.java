@@ -2,7 +2,10 @@ package stepDefinitions;
 
 import io.cucumber.java.en.*;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -10,20 +13,20 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import utilities.BrowserUtils;
 import utilities.Driver;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.time.Duration;
 
 public class TravelSteps {
 
-@Given("I am on the registration page")
+	public TravelSteps() throws IOException {
+	}
+
+	@Given("I am on the registration page")
 public void i_am_on_the_registration_page() {
-	Driver.get().get("https://phptravels.net");
-	Driver.get().findElement(By.id("ACCOUNT")).click();
-	Driver.get().findElement(By.xpath("//a[.='Customer Login']")).click();
-	BrowserUtils.waitFor(2);
+		Driver.get().get("https://phptravels.net");
+		Driver.get().findElement(By.id("ACCOUNT")).click();
+		Driver.get().findElement(By.xpath("//a[.='Customer Login']")).click();
+		BrowserUtils.waitFor(2);
 }
 
 @When("I fill in the registration form with valid information")
@@ -156,6 +159,15 @@ public void i_should_see_a_list_of_available_hotels_in_the_specified_location_an
 	BrowserUtils.waitFor(2);
 }
 
+	private Workbook workbook;
+	private Sheet sheet;
+	private Row row;
+	private Cell cell;
+	private int currentRow;
+	String filePath = "src/test/java/stepDefinitions/data.xlsx";
+	File file = new File(filePath);
+	FileInputStream inputStream = new FileInputStream(file);
+
 	@Given("I am on the home page")
 	public void i_am_on_the_home_page() {
 		Driver.get().get("https://phptravels.net");
@@ -168,62 +180,24 @@ public void i_should_see_a_list_of_available_hotels_in_the_specified_location_an
 		BrowserUtils.waitFor(2);
 	}
 
-	@When("I enter {string} and {string}")
-	public void i_enter_and(String username, String password) throws IOException {
-		String filePath = "src/test/java/stepDefinitions/data.xls";
 
-		// create a File object with the above file path
-		File file = new File(filePath);
-
-		// create a FileInputStream object to read the file
-		FileInputStream inputStream = new FileInputStream(file);
-
-		// create a Workbook object to work with the Excel file
-		Workbook workbook = WorkbookFactory.create(inputStream);
-
-		// get the first sheet of the workbook
-		Sheet sheet = workbook.getSheetAt(0);
-
-		for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
-			// get the first row of the sheet
-			Row row = sheet.getRow(i);
-			System.out.println(row);
-			// get the first cell of the row
-			Cell cell = row.getCell(0);
-			System.out.println(cell);
-
-			// get the value of the cell
-			username = cell.toString();
-			System.out.println(username);
-
-			// get the second cell of the row
-			cell = row.getCell(1);
-
-			// get the value of the cell
-			password = cell.toString().substring(0,6);
-			System.out.println(password);
-
-			// enter the username
-			Driver.get().findElement(By.name("email")).sendKeys(username);
-
-			// enter the password
-			Driver.get().findElement(By.name("password")).sendKeys(password);
-
-			// click on the login button
-			i_click_on_the_login_button();
-
-			// verify that the user is logged in
-			i_should_be_redirected_to_the_home_page();
-			//refresh the page
-			Driver.get().navigate().refresh();
-			Driver.get().get("https://phptravels.net");
-
-			Driver.get().findElement(By.id("ACCOUNT")).click();
-			Driver.get().findElement(By.xpath("//a[.='Customer Login']")).click();
-
-
-
-		}
+	@When("I enter {string} and {string} in the {string} row")
+	public void i_enter_and_in_the_row(String username, String password, String ind) throws IOException {
+		workbook = new XSSFWorkbook(inputStream);
+		sheet = workbook.getSheetAt(0);
+		currentRow = 1;
+		int rowIndex = Integer.parseInt(ind);
+		row = sheet.getRow(rowIndex);
+		cell = row.getCell(0);
+		username = cell.toString();;
+		System.out.println("username = " + username);
+		cell = row.getCell(1);
+		password = cell.toString().substring(0,6);
+		System.out.println("password = " + password);
+		Driver.get().findElement(By.name("email")).sendKeys(username);
+		Driver.get().findElement(By.name("password")).sendKeys(password);
+		currentRow = rowIndex;
+		System.out.println("currentRow = " + currentRow);
 	}
 
 	@When("I click on the login button")
@@ -232,8 +206,30 @@ public void i_should_see_a_list_of_available_hotels_in_the_specified_location_an
 	}
 
 	@Then("I should be redirected to the home page")
-	public void i_should_be_redirected_to_the_home_page() {
-		Assert.assertTrue(Driver.get().getCurrentUrl().contains("account"));
+	public void i_should_be_redirected_to_the_home_page() throws IOException {
+		String actualUrl = Driver.get().getCurrentUrl();
+		if (actualUrl.contains("account")) {
+			setCellValue("pass");
+
+			FileOutputStream outputStream = new FileOutputStream("src/test/java/stepDefinitions/data.xlsx");
+			workbook.write(outputStream);
+			outputStream.close();
+			workbook.close();
+			Assert.assertTrue(true);
+		} else {
+			setCellValue("fail");
+			FileOutputStream outputStream = new FileOutputStream("src/test/java/stepDefinitions/data.xlsx");
+			workbook.write(outputStream);
+			outputStream.close();
+			workbook.close();
+			Assert.fail();
+		}
 	}
 
+
+	private void setCellValue(String value) {
+		row = sheet.getRow(currentRow);
+		cell = row.createCell(2);
+		cell.setCellValue(value);
+	}
 }
